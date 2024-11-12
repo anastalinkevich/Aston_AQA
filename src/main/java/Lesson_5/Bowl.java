@@ -3,7 +3,7 @@ package Lesson_5;
 public class Bowl {
     public int foodAmount;
 
-//Конструктор класса
+// Конструктор класса
     public Bowl(int initFood){
         if(initFood < 0){
             System.out.println("Количество еды не может быть отрицательным");
@@ -11,7 +11,7 @@ public class Bowl {
         this.foodAmount = initFood; // принимающий значение еды и возвращает количество в переменную foodAmount
     }
 
-//Метод хранит сколько осталось еды в миске
+// Метод хранит сколько осталось еды в миске
     public int getFoodBowl() {
         return foodAmount;
     }
@@ -29,6 +29,7 @@ public class Bowl {
         if(amount > 0) {
             System.out.println("Добавлено " + amount + " единиц еды.");
             foodAmount += amount;
+            System.out.println("В миске стало: " + foodAmount);
         } else {
             System.out.println("Нельзя добавить отрицательное количество еды.");
         }
