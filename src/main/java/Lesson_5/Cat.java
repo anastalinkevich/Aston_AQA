@@ -31,7 +31,7 @@ public class Cat extends Animal{
 // У метода есть ограничения в дистанции, сколько кот может пробежать.
     public void run(int distance){
         if (distance <= maxRunDistance) {
-            System.out.println(name + " пробежал " + distance + " м.");
+            System.out.println(name + " пробежал(а) " + distance + " м.");
         } else {
             System.out.println(name + "  не может пробежать более " + maxRunDistance + " метров.");
         }
@@ -41,7 +41,7 @@ public class Cat extends Animal{
 // У метода есть ограничения в дистанции. Кот не умеет плавать
     public void swim(int distance){
         if (distance > maxSwimDistance) {
-            System.out.println(name + " не может проплыть более " + maxRunDistance + " метров.");
+            System.out.println(name + " не умеет плавать.");
         }
     }
 

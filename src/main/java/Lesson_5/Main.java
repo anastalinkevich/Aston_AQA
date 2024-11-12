@@ -20,13 +20,13 @@ public class Main {
         Cat mila = new Cat("Мила", bowl);
 
 // Выводим на экран значения из методов и количество созданных животных, котов и собак.
-        System.out.println("Количество созданных животных: " + Animal.getAnimalCount());
+        System.out.println("\n" + "Количество созданных животных: " + Animal.getAnimalCount());
         System.out.println("Количество созданных собак: " + Dog.getDogCount());
-        System.out.println("Количество созданных котов: " + Cat.getCatCount());
+        System.out.println("Количество созданных котов: " + Cat.getCatCount() + "\n");
 
 // Вызываем у нового кота метод, позволяющий кушать из миски.
         mila.eatBowl(5);
-        System.out.println(mila.isCatFull());
+        System.out.println("Мила: " + mila.isCatFull());
 
         System.out.println();
 // Создаем общую миску.
