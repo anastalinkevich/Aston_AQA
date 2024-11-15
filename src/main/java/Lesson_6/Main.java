@@ -2,15 +2,18 @@ package Lesson_6;
 
 public class Main {
     public static void main(String[] args) {
-        String[][] correctArray = {{"1", "2", "4", "5"},
+        String[][] correctArray =
+                {{"1", "2", "4", "5"},
                 {"5", "12", "4", "2"},
                 {"9", "0", "1", "1"},
                 {"7", "2", "8", "7"}};
-        String[][] inCorrectArray = {{"9", "2", "6",},
+        String[][] inCorrectArray =
+                {{"9", "2", "6",},
                 {"5", "12", "4"},
                 {"9", "0", "1"},
                 {"0", "2", "8"}};
-        String[][] inCorrectArrayInt = {{"1", "2", "5", "2"},
+        String[][] inCorrectArrayInt =
+                {{"1", "2", "5", "2"},
                 {"5", "two", "4", "2"},
                 {"1", "0", "6", "1"},
                 {"7", "2", "2", "7"}};
