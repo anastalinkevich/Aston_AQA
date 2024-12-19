@@ -11,6 +11,7 @@ import java.time.Duration;
 
 public class SeleniumTest {
     private static WebDriver driver;
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
     @BeforeAll
     public static void setUp() {
@@ -25,7 +26,7 @@ public class SeleniumTest {
     @BeforeEach
     public void cookiePopup() {
         By cookieLocator = By.xpath("//button[@class='btn btn_black cookie__ok']");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
         try {
             WebElement cookieButton = wait.until(ExpectedConditions.elementToBeClickable(cookieLocator));
             cookieButton.click();
@@ -71,24 +72,34 @@ public class SeleniumTest {
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
     @Test
     public void testButton() {
-        WebElement numberPhone = driver.findElement(By.id("connection-phone"));
+        WebElement numberPhone = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
         numberPhone.click();
         numberPhone.sendKeys("297777777");
 
-        WebElement sumRub = driver.findElement(By.id("connection-sum"));
+        WebElement sumRub = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-sum")));
         sumRub.click();
         sumRub.sendKeys("10");
 
-        WebElement submit = driver.findElement(By.xpath("//*[@id='pay-connection']/button"));
+        WebElement submit = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='pay-connection']/button")));
         submit.click();
+//        WebElement numberPhone = driver.findElement(By.id("connection-phone"));
+//        numberPhone.click();
+//        numberPhone.sendKeys("297777777");
+//
+//        WebElement sumRub = driver.findElement(By.id("connection-sum"));
+//        sumRub.click();
+//        sumRub.sendKeys("10");
+//
+//        WebElement submit = driver.findElement(By.xpath("//*[@id='pay-connection']/button"));
+//        submit.click();
     }
 
     // Закрываем браузер
-    @AfterAll
-    public static void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterAll
+//    public static void tearDown() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
+//    }
 
 }
