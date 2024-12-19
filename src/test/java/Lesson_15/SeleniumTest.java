@@ -67,6 +67,9 @@ public class SeleniumTest {
 
         // Проверяем, что произошла навигация на нужную страницу
         Assertions.assertEquals(driver.getCurrentUrl(), expectedUrl, "Переход не произошёл по linkText 'Подробнее о сервисе'");
+
+        // Возвращаемся на предыдущую страницу
+        driver.navigate().back();
     }
 // Четвертый тест
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
