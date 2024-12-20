@@ -43,15 +43,19 @@ public class SeleniumTest {
     @Test
     public void findText(){
         String expected = "Онлайн пополнение\nбез комиссии";
-        WebElement actualLocator = driver.findElement(By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/h2")); // Не знаю как правильно записать локатор, когда текст разделен на две строки
-        String actual = actualLocator.getText();
-        Assertions.assertEquals(expected, actual, "Не удалось найти строку - Онлайн пополнение без комиссии");
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".pay h2")));
+        WebElement h2Element = driver.findElement(By.cssSelector(".pay h2"));
+        String h2Text = h2Element.getText().replaceAll("\n", "");// Не знаю как правильно записать локатор, когда текст разделен на две строки
+        //String actual = actualLocator.getText();
+        Assertions.assertEquals(expected, h2Text, "Не удалось найти строку - Онлайн пополнение без комиссии");
     }
 // Второй тест
     @DisplayName("Проверка наличия логотипов платёжных систем")
     @Test
     public void findImagePartners(){
-        driver.findElement(By.className("pay__partners"));
+        WebElement partners = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("pay__partners")));
+        Assertions.assertTrue(partners.isDisplayed(), "Логотипы партёров не найдены");
+        //driver.findElement(By.className("pay__partners"));
     }
 
 // Третий тест
@@ -62,6 +66,7 @@ public class SeleniumTest {
         String linkText = "Подробнее о сервисе";
 
         // Находим ссылку по тексту и кликаем на нее
+        wait.until(ExpectedConditions.elementToBeClickable(By.linkText(linkText)));
         WebElement link = driver.findElement(By.linkText(linkText));
         link.click();
 
@@ -85,6 +90,8 @@ public class SeleniumTest {
 
         WebElement submit = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='pay-connection']/button")));
         submit.click();
+
+        Assertions.assertTrue(submit.isDisplayed(), "Пополнение не произошло");
 //        WebElement numberPhone = driver.findElement(By.id("connection-phone"));
 //        numberPhone.click();
 //        numberPhone.sendKeys("297777777");
