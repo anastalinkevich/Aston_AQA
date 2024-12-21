@@ -92,6 +92,8 @@ public class SeleniumTest {
         submit.click();
 
         Assertions.assertTrue(submit.isDisplayed(), "Пополнение не произошло");
+
+
 //        WebElement numberPhone = driver.findElement(By.id("connection-phone"));
 //        numberPhone.click();
 //        numberPhone.sendKeys("297777777");
