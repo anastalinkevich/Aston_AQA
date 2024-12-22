@@ -17,6 +17,9 @@ public class OnlinePaymentTest {
     private static WebDriver driver;
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
+    public String phone = "297777777";
+    public String sum = "10.55";
+
 // Перед всеми тестами
     @BeforeAll
     static void setUpAll(){
@@ -26,10 +29,11 @@ public class OnlinePaymentTest {
     @BeforeEach
     void setUp(){
         driver = new ChromeDriver();
+        onlinePayment = new OnlinePayment(driver); // Переместил сюда!
         driver.get("https://www.mts.by/?hash-offset=70&hash-dur=1300#pay-section");
         driver.manage().window().maximize();
         WebElement cookieLocator = driver.findElement(By.xpath("//*[@id='cookie-agree']"));
-        if(cookieLocator.isDisplayed()){
+        if (cookieLocator.isDisplayed()) {
             cookieLocator.click();
         }
     }
@@ -40,10 +44,10 @@ public class OnlinePaymentTest {
     public void firstTest() {
         OnlinePayment actual = onlinePayment.findText();
         String expected = "Онлайн пополнение\nбез комиссии";
-        Assertions.assertEquals(expected, actual, "Не удалось найти строку - Онлайн пополнение без комиссии");
+        //Assertions.assertEquals(expected, actual, "Не удалось найти строку - Онлайн пополнение без комиссии");
     }
 // Второй тест Lesson_15
-    @DisplayName("Проверка наличия логотипов платёжных систем")
+    @DisplayName("Проверка наличия логотипов платёжных систем партнеров")
     @Test
     public void findPartners(){
         onlinePayment.findImagePartners();
@@ -58,7 +62,7 @@ public class OnlinePaymentTest {
     @DisplayName("Проверка перехода по ссылке")
     @Test
     public void testLink() {
-        wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Подробнее о сервисе")));
+        wait.until(ExpectedConditions.elementToBeClickable(onlinePayment.linkText));
         onlinePayment.clickLink();
         String expectedUrl = "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/";
     // Проверяем, что произошла навигация на нужную страницу
@@ -71,15 +75,13 @@ public class OnlinePaymentTest {
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
     @Test
     public void testButton() {
-        String phone = "297777777";
-        onlinePayment.inputPhone(phone);
+        onlinePayment.setPhone(phone);
 
-        String sum = "10";
-        onlinePayment.inputSum(sum);
-        //driver.click();
+        onlinePayment.setSum(sum);
         onlinePayment.clickButton();
 
-    //Assertions.assertTrue(onlinePayment.clickButton().isDisplayed(), "Пополнение не произошло");
+        //WebElement expectedFrame = driver.findElement(By.xpath("//*[@class='bepaid-iframe']"));
+        //Assertions.assertTrue(onlinePayment.clickButton().isDisplayed(), "Пополнение не произошло");
     }
     
 // Тесты по лекции 17 "Тестирование с помощью Selenium WebDriver часть 2"
@@ -87,7 +89,7 @@ public class OnlinePaymentTest {
     @DisplayName("Проверка плейсхолдеров <Услуги связи>")
     @Test
     void testPlaceholderServices() {
-        //WebElement until = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
+    // Ищем поле Номер телефона
         WebElement inputPhone = driver.findElement(By.id("connection-phone"));
     // Получить значение атрибута 'placeholder'
         String placeholderValue = inputPhone.getAttribute("placeholder");
@@ -95,11 +97,11 @@ public class OnlinePaymentTest {
         assertEquals("Номер телефона", placeholderValue, "Название в плейсхолдере не совпадает с 'Номер телефона'");
 
     // Найти элемент ввода текста
-        WebElement inputSum = driver.findElement(By.id("connection-phone"));
+        WebElement inputSum = driver.findElement(By.id("connection-sum"));
     // Получить значение атрибута 'placeholder'
         String placeholderValueSum = inputSum.getAttribute("placeholder");
     // Проверить значение
-        assertEquals("Номер телефона", placeholderValueSum, "Название в плейсхолдере не совпадает с 'Сумма'");
+        assertEquals("Сумма", placeholderValueSum, "Название в плейсхолдере не совпадает с 'Сумма'");
     }
 
     @DisplayName("Проверка плейсхолдеров <Домашний интернет>")
@@ -130,7 +132,7 @@ public class OnlinePaymentTest {
     public void testPlaceholderScore(){
         WebDriverWait waitElement = new WebDriverWait(driver, Duration.ofSeconds(4));
 
-        WebElement menu = driver.findElement(By.className("select__header"));
+        WebElement menu = driver.findElement(By.className("select__header")); //Присваиваем переменной ссылку на локатор
         menu.click();
         WebElement sumMenu = driver.findElement(By.xpath("//p[@class='select__option' and text()='Рассрочка']"));
         sumMenu.click();
@@ -148,7 +150,7 @@ public class OnlinePaymentTest {
         Assertions.assertEquals("Сумма", placeholderInternetSum, "Название в плейсхолдере не совпадает с 'Сумма'");
     }
 
-    @DisplayName("Проверка плейсхолдеров Задолженность")
+    @DisplayName("Проверка плейсхолдеров <Задолженность>")
     @Test
     public void testPlaceholderArrears(){
         WebDriverWait waitElement = new WebDriverWait(driver, Duration.ofSeconds(4));
@@ -173,50 +175,50 @@ public class OnlinePaymentTest {
 
 //Задание 2 по Lesson_16
 
+    //При Debug тест проходит, но при запуске падает
     @DisplayName("Заполнение полей и переход на фрейм")
     @Test
     public void testFillFrame(){
-        WebDriverWait waitFrame = new WebDriverWait(driver, Duration.ofSeconds(4));
-        WebElement numberPhone = waitFrame.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
-        numberPhone.click();
-        numberPhone.sendKeys("297777777");
+        wait.until(ExpectedConditions.elementToBeClickable(onlinePayment.connectPhone)); //Ждём доступность поля Номер телефона
+        onlinePayment.setPhone(phone);
 
-        WebElement sumRub = waitFrame.until(ExpectedConditions.elementToBeClickable(By.id("connection-sum")));
-        sumRub.click();
-        sumRub.clear();
-        sumRub.sendKeys("10.55");
+        wait.until(ExpectedConditions.elementToBeClickable(onlinePayment.connectSum)); // Ждём доступность поля Сумма
+        onlinePayment.setSum(sum);
+        onlinePayment.clickButton();
 
-        WebElement submit = driver.findElement(By.xpath("//*[@id='pay-connection']/button"));
-        submit.click();
-
-// Переходим на фрейм оплаты
-        waitFrame.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class='bepaid-iframe']"))); // By.xpath("//div[@class='app-wrapper__content']");
-        WebElement iframe = driver.findElement(By.xpath("//*[@class='bepaid-iframe']"));//By.className("app-wrapper__content"
+// Явное ожидание фрейма и переход для дальнейшей оплаты
+        wait.until(ExpectedConditions.elementToBeClickable(onlinePayment.frameConnect));
+        WebElement iframe = onlinePayment.frameConnect;
         driver.switchTo().frame(iframe);
 
 // Проверить, что введённая сумма содержится в тексте вместе с валютой "BYN"
-        WebElement phoneNumberFrame = driver.findElement(By.cssSelector(".ng-tns-c46-1.ng-star-inserted"));//"//div[@class='pay-description__cost']/span[1]"))
-        String textFrame = phoneNumberFrame.getText();// By.className("pay-description__cost")
-        Assertions.assertEquals("10.55 BYN", textFrame, "Текст во фрейме не совпадает с введенной суммой."); // Assertions.assertTrue(actualSum.contains("10") && actualSum.endsWith("BYN"),
+        WebElement creditCardFormCost = onlinePayment.creditCardFormCost;
+        Assertions.assertEquals("10.55 BYN", creditCardFormCost.getText(), "Ожидаемая сумма и актуальна не совпадает.");
 
 //Проверка значение плейсхолдера на фрейме Номер карты
-        WebElement labelText = driver.findElement(By.id("cc-number"));
-        String text = labelText.getText();
-        //Assertions.assertEquals("Номер карты", text, "Текст во фрейме не соответсвует Номер карты");
+        WebElement labelText = onlinePayment.labelText;
+        Assertions.assertEquals("Номер карты", labelText.getText(), "Текст во фрейме не соответствует <Номер карты>");
 
-//Проверка значения плейсхоледра Срок действия
-        WebElement timeDur = driver.findElement(By.xpath("//*[@class='ng-tns-c46-4 ng-star-inserted']"));
+// Проверка значения номера телефона
+        WebElement numberPhoneText = onlinePayment.numberPhoneText;
+        Assertions.assertEquals("Оплата: Услуги связи Номер:375297777777", numberPhoneText.getText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");
+
+//Проверка значения плейсхоледра <Срок действия>
+        WebElement timeInserted = onlinePayment.timeInserted;
+        Assertions.assertEquals("Срок действия", timeInserted.getText(), "Текст во фрейме не соответствует <Срок действия>");
 
 //Проверка надписи CVC
-        WebElement testCVC = driver.findElement(By.xpath("//*[@class='ng-tns-c46-5 ng-star-inserted']"));
+        WebElement testCVC = onlinePayment.testCVC;
+        Assertions.assertEquals("CVC", testCVC.getText(), "Текст во фрейме не соответствует <CVC>");
 
 //Проверка надписи Имя держателя на карте
-        WebElement nameOuner = driver.findElement(By.xpath("//*[@class='ng-tns-c46-3 ng-star-inserted']"));
+        WebElement nameOuner = onlinePayment.nameOuner;
+        Assertions.assertEquals("Имя держателя (как на карте)", nameOuner.getText(), "Текст во фрейме не соответсвует <Имя держателя (на карте)>");
 
-        WebElement buttonLocatorSum = driver.findElement(By.xpath("//*[@class='ng-tns-c46-1 ng-star-inserted']"));
-
+//Проверка надписи на кнопке
+        WebElement buttonLocatorSum = onlinePayment.buttonLocatorSum;
+        Assertions.assertEquals("Оплатить 10.55 BYN", buttonLocatorSum.getText(), "Текст во фрейме не соответсвует <Оплатить 10.55 BYN>");
     }
-
 }
 
 

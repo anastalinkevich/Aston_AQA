@@ -2,59 +2,77 @@ package Lesson_16;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class OnlinePayment {
     private static WebDriver driver;
-    public static InfoServise infoServise;
 
 // Локаторы класса OnlinePayment
-    //By cookieLocator = By.xpath("//button[@class='btn btn_black cookie__ok']");
-    By textLocator = By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/h2");
-    By partnersLocator = By.className("pay__partners");
-    By linkText = By.linkText("Подробнее о сервисе");
-    By connectPhone = By.id("connection-phone");
-    By connectSum = By.id("connection-sum");
-    By submitButton = By.xpath("//*[@id='pay-connection']/button");
+    @FindBy(xpath = "//div[@class = 'pay__wrapper']/h2")
+    WebElement textLocator;
+    @FindBy(className = "pay__partners")
+        WebElement partnersLocator;
+    @FindBy(linkText = "Подробнее о сервисе")
+        WebElement linkText;
+    @FindBy(id = "connection-phone")
+        WebElement connectPhone;
+    @FindBy(id = "connection-sum")
+        WebElement connectSum;
+    @FindBy(xpath = "//*[@id='pay-connection']/button")
+        WebElement submitButton;
 
-    String text = "Онлайн пополнение без комиссии";
+//Локаторы фрейма оплаты
+    @FindBy(xpath = "//*[@class='bepaid-iframe']")
+        WebElement frameConnect;
+    @FindBy(xpath = "//div[@class='pay-description__cost']/span[1]")
+        WebElement creditCardFormCost;
+    @FindBy(xpath = "//*[@class='ng-tns-c46-1 ng-star-inserted']")
+        WebElement labelText;
+    @FindBy(xpath = "//div[@class='pay-description__text']/span[1]")
+        WebElement numberPhoneText;
+    @FindBy(xpath = "//*[@class='ng-tns-c46-4 ng-star-inserted']")
+        WebElement timeInserted;
+    @FindBy(xpath = "//*[@class='ng-tns-c46-5 ng-star-inserted']")
+        WebElement testCVC;
+    @FindBy(xpath = "//*[@class='ng-tns-c46-3 ng-star-inserted']")
+        WebElement nameOuner;
+    @FindBy(xpath = "//*[@class='colored disabled']")
+        WebElement buttonLocatorSum;
+
 
 // Конструктор класса
     public OnlinePayment(WebDriver driver) {
-        this.driver = driver;
+        PageFactory.initElements(driver, this);
+        OnlinePayment.driver = driver;;
     }
 // Метод первого теста. Нахождение заголовка
     public OnlinePayment findText(){
-        driver.findElement(textLocator);
+        textLocator.getText();
         return this;
     }
 
 // Метод второго теста. Ищем лого партеров
-    public OnlinePayment findImagePartners(){
-        driver.findElement(partnersLocator);
-        return this;
+    public void findImagePartners(){
+        partnersLocator.isDisplayed();
     }
 
 //  Метод третьего теста. Проверяем переход по ссылке
-    public InfoServise clickLink(){
-        driver.findElement(linkText).click();
-        return new InfoServise();
+    public void clickLink(){
+        linkText.click();
     }
 // Метод ввода номера телефона на основную страницу
-    public OnlinePayment inputPhone(String phone){
-        driver.findElement(connectPhone).sendKeys();
-        return this;
+    public void setPhone(String phone){
+        connectPhone.sendKeys(phone);
     }
 // Метод ввода суммы на основной странице
-    public OnlinePayment inputSum(String sum){
-        driver.findElement(connectSum).sendKeys(sum);
-        return this;
+    public void setSum(String sum){
+        connectSum.sendKeys(sum);
     }
-//Метод нажатия кпоки Продолжить
-    public OnlinePayment clickButton(){
-        driver.findElement(submitButton).click();
-        return this;
+//Метод нажатия кпопки Продолжить
+    public void clickButton(){
+        submitButton.click();
     }
+
 }
