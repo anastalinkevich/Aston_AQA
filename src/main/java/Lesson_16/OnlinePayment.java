@@ -1,13 +1,12 @@
 package Lesson_16;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class OnlinePayment {
-    private static WebDriver driver;
+    public static WebDriver driver;
 
 // Локаторы класса OnlinePayment
     @FindBy(xpath = "//div[@class = 'pay__wrapper']/h2")
@@ -24,8 +23,10 @@ public class OnlinePayment {
         WebElement submitButton;
 
 //Локаторы фрейма оплаты
-    @FindBy(xpath = "//*[@class='bepaid-iframe']")
+    @FindBy(xpath = "//div[@class='pay__wrapper']/h2")
         WebElement frameConnect;
+    @FindBy(xpath = "//*[@class='bepaid-iframe']")
+        WebElement iframeConnect;
     @FindBy(xpath = "//div[@class='pay-description__cost']/span[1]")
         WebElement creditCardFormCost;
     @FindBy(xpath = "//*[@class='ng-tns-c46-1 ng-star-inserted']")
@@ -41,6 +42,15 @@ public class OnlinePayment {
     @FindBy(xpath = "//*[@class='colored disabled']")
         WebElement buttonLocatorSum;
 
+//Локаторы полей на главной странице
+    @FindBy(className = "select__header")
+        WebElement menuSelect;
+    @FindBy(xpath = "//p[@class='select__option' and text()='Рассрочка']")
+        WebElement subMenu;
+    @FindBy(xpath = "//p[@class='select__option' and text()='Домашний интернет']")
+        WebElement homeInternet;
+    @FindBy(xpath = "//p[@class='select__option' and text()='Задолженность']")
+        WebElement arrears;
 
 // Конструктор класса
     public OnlinePayment(WebDriver driver) {
@@ -49,7 +59,7 @@ public class OnlinePayment {
     }
 // Метод первого теста. Нахождение заголовка
     public OnlinePayment findText(){
-        textLocator.getText();
+        textLocator.isDisplayed();
         return this;
     }
 
@@ -74,5 +84,15 @@ public class OnlinePayment {
     public void clickButton(){
         submitButton.click();
     }
-
+//Метод для нажатия на меню
+    public void clickMenu(){
+        menuSelect.click();
+    }
+//Метод для субменю
+    public void clickSubMenu(){
+        subMenu.click();
+    }
+    public void clickArrears(){
+        arrears.click();
+    }
 }
