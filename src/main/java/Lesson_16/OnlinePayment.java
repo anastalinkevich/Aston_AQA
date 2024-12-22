@@ -7,11 +7,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class OnlinePayment {
-    // Вебдрайвер и WebDriverWait
     private static WebDriver driver;
-    //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+    public static InfoServise infoServise;
 
-    // Локаторы класса OnlinePayment
+// Локаторы класса OnlinePayment
     //By cookieLocator = By.xpath("//button[@class='btn btn_black cookie__ok']");
     By textLocator = By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div/h2");
     By partnersLocator = By.className("pay__partners");
@@ -22,42 +21,38 @@ public class OnlinePayment {
 
     String text = "Онлайн пополнение без комиссии";
 
-    // Конструктор класса
+// Конструктор класса
     public OnlinePayment(WebDriver driver) {
         this.driver = driver;
-
-        if (!"Login".equals(driver.getTitle())) {
-            throw new IllegalStateException("This is not the login page");
-        }
     }
-    // Метод первого теста
-    public OnlinePayment findText(String text){
+// Метод первого теста. Нахождение заголовка
+    public OnlinePayment findText(){
         driver.findElement(textLocator);
         return this;
     }
 
-    // Метод второго теста
+// Метод второго теста. Ищем лого партеров
     public OnlinePayment findImagePartners(){
         driver.findElement(partnersLocator);
         return this;
     }
 
-    //  Метод третьего теста
+//  Метод третьего теста. Проверяем переход по ссылке
     public InfoServise clickLink(){
         driver.findElement(linkText).click();
         return new InfoServise();
     }
-
+// Метод ввода номера телефона на основную страницу
     public OnlinePayment inputPhone(String phone){
         driver.findElement(connectPhone).sendKeys();
         return this;
     }
-
+// Метод ввода суммы на основной странице
     public OnlinePayment inputSum(String sum){
         driver.findElement(connectSum).sendKeys(sum);
         return this;
     }
-
+//Метод нажатия кпоки Продолжить
     public OnlinePayment clickButton(){
         driver.findElement(submitButton).click();
         return this;
