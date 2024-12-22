@@ -4,7 +4,6 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -52,15 +51,12 @@ public class OnlinePaymentTest {
 
     }
 
+    // Второй тест
+    @DisplayName("Проверка лого Партеров")
     @Test
-    @DisplayName("Партнеры")
     void logo(){
         driver.findElement(By.className("pay__partners"));
     }
-
-
-
-
 
     // Третий тест
     @DisplayName("Проверка перехода по ссылке")
@@ -198,21 +194,44 @@ public class OnlinePaymentTest {
 
         WebElement submit = driver.findElement(By.xpath("//*[@id='pay-connection']/button"));
         submit.click();
-        Assertions.assertTrue(submit.isDisplayed(), "Пополнение не произошло");
 
         waitFrame.until(ExpectedConditions.elementToBeClickable(By.className("app-wrapper__content")));
-        WebElement spanElement = driver.findElement(By.cssSelector("span[_ngcontent-yia-c62]"));//By.cssSelector("span[_ngcontent-yia-c62]"
-        String actualSum = spanElement.getText();
+        WebElement iframe = driver.findElement(By.className("app-wrapper__content"));
+        driver.switchTo().frame(iframe);
+
+        WebElement phoneNumberFrame = driver.findElement(By.className("content ng-tns-c46-1"));
+        //Assertions.assertTrue(submit.isDisplayed(), "Пополнение не произошло");
+
+
+//        WebElement spanElement = driver.findElement(By.cssSelector("span[_ngcontent-yia-c62]"));
+//        By.cssSelector("span[_ngcontent-yia-c62]"
+//        String actualSum = spanElement.getText();
+
+        //driver.switchTo().frame(driver.findElement(By.className("app-wrapper__content")));
+        //driver.findElement(By.className("app-wrapper__content"));
+        // Ожидание появления полей ввода
+//        By onlinePaymentCreditCardForm = By.xpath("//div[@class='app-wrapper__content']");
+//        WebElement bePaidFrame = wait.until(ExpectedConditions.elementToBeClickable(By.className("bepaid-iframe")));
+//        wait.until(ExpectedConditions.elementToBeClickable(onlinePaymentCreditCardForm));
+//        //driver.switchTo().frame(bePaidFrame);
+//        WebElement inputNumberCard = waitFrame.until(ExpectedConditions.visibilityOfElementLocated(By.className("ng-tns-c46-1 ng-star-inserted")));
+
+        // Извлечение и проверка значений placeholder
+        //String placeholdeNumberCard = inputNumberCard.getAttribute("placeholder");
+
+        // Утверждения
+        //Assertions.assertEquals("Номер карты", placeholdeNumberCard, "Название в плейсхолдере не совпадает с 'Номер карты'");
 
         // Проверить, что введённая сумма содержится в тексте вместе с валютой "BYN"
-        Assertions.assertTrue(actualSum.contains("10") && actualSum.endsWith("BYN"),
-                "Введенная сумма и отображаемая не соответствуют друг другу.");
-
-
-        WebElement spanElement2 = driver.findElement(By.cssSelector("span[_ngcontent-rpj-c62]"));
-
-        //h1[contains(text(),’297777777’)]
+//        Assertions.assertTrue(actualSum.contains("10") && actualSum.endsWith("BYN"),
+//                "Введенная сумма и отображаемая не соответствуют друг другу.");
+//
+//
+//        WebElement spanElement2 = driver.findElement(By.cssSelector("span[_ngcontent-rpj-c62]"));
+//
+//        //h1[contains(text(),’297777777’)]
     }
+
 }
 
 

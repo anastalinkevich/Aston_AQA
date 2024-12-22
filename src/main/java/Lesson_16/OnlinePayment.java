@@ -20,33 +20,6 @@ public class OnlinePayment {
     By connectSum = By.id("connection-sum");
     By submitButton = By.xpath("//*[@id='pay-connection']/button");
 
-    //By placeholderNumber = By.xpath("//input[@placeholder='Номер телефона']");
-    //By placeholderSum = By.xpath("//input[@placeholder='Сумма']");
-
-    //By plaсecholderText = By.xpath("//input[@placeholder='Номер абонента']");
-
-//    // Локатор для первого поля
-//    WebElement connectionSumField = driver.findElement(By.id("connection-sum"));
-//    String connectionPlaceholder = connectionSumField.getAttribute("placeholder");
-//    Assertions.assertEquals(connectionPlaceholder, "Сумма");
-//
-//    // Локатор для второго поля
-//    WebElement internetSumField = driver.findElement(By.id("internet-sum"));
-//    String internetPlaceholder = internetSumField.getAttribute("placeholder");
-//    Assertions.assertEquals(internetPlaceholder, "Сумма");
-//
-//    // Локатор для третьего поля
-//    WebElement instalmentSumField = driver.findElement(By.id("instalment-sum"));
-//    String instalmentPlaceholder = instalmentSumField.getAttribute("placeholder");
-//    Assertions.assertEquals(instalmentPlaceholder, "Сумма");
-//
-//    // Локатор для четвертого поля
-//    WebElement arrearsSumField = driver.findElement(By.id("arrears-sum"));
-//    String arrearsPlaceholder = arrearsSumField.getAttribute("placeholder");
-//    Assertions.assertEquals(arrearsPlaceholder, "Сумма");
-
-    // Данные для теста
-
     String text = "Онлайн пополнение без комиссии";
 
     // Конструктор класса
