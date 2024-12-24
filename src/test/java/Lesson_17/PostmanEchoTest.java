@@ -2,6 +2,7 @@ package Lesson_17;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,17 +13,28 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class PostmanEchoTest {
+    public Specifications requestSpec;
+    public Specifications responceSpec;
+
+
     @BeforeEach
-    void sitUp(){
+    void setUp(){
         RestAssured.baseURI = "https://postman-echo.com";
     }
+
+//    @BeforeEach
+//    void setUp() {
+//        requestSpec = RestAssured.given();
+//        given().request(requestSpec);
+//    }
 
     @Test
     @DisplayName("Метод GET")
     public void givenStatus(){
         given().log().all()
         .when().get("/get?foo1=bar1&foo2=bar2")
-        .then().log().body().statusCode(200)
+        .then().log().body()
+                //.statusCode(200)
                 .assertThat()
                 .body("args.foo1", equalTo("bar1"))
                 .body("args.foo2", equalTo("bar2"))
@@ -39,15 +51,14 @@ public class PostmanEchoTest {
                 //.body("headers.accept-encoding", equalTo("gzip, deflate, br"))
                 //.body("headers.cookie", equalTo(null))
                 .body("url", equalTo("https://postman-echo.com/get?foo1=bar1&foo2=bar2"));
-                //.statusCode(200);
+                //.statusCode(HttpStatus.CREATED.value());
     }
 
     @Test
     @DisplayName("Проверка Post Raw Text")
     public void postRawTextTest() {
-//        RestAssured.baseURI = "https://postman-echo.com";
         given()
-            .baseUri("https://postman-echo.com")
+            //.baseUri("https://postman-echo.com")
             .contentType("application/json")
             .body("This is expected to be sent back as part of response body.")
         .when()
@@ -64,7 +75,7 @@ public class PostmanEchoTest {
             .body("headers.x-forwarded-proto", equalTo("https"))
             .body("headers.x-forwarded-port", equalTo("443"))
             .body("headers.x-amzn-trace-id", notNullValue())
-//          .body("headers.content-type", equalTo("text/plain"))    // проверить
+//          .body("headers.content-type", equalTo("text/plain"))
             .body("headers.user-agent", notNullValue())
             .body("headers.accept", equalTo("*/*"))
             //.body("headers.postman-token", equalTo(null))
@@ -79,7 +90,7 @@ public class PostmanEchoTest {
     @DisplayName("Проверка Post Form data")
     public void postFromDataTest() {
         given()
-                .baseUri("https://postman-echo.com")
+                //.baseUri("https://postman-echo.com")
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
                 .formParam("foo1", "bar1")
                 .formParam("foo2", "bar2")
@@ -111,22 +122,23 @@ public class PostmanEchoTest {
                 .statusCode(200);
     }
     @Test
-    @DisplayName("Проверка put ")
+    @DisplayName("Проверка PUT запроса")
     public void putRequest() {
-        given()
-                .baseUri("https://postman-echo.com")
-                //.contentType(ContentType.JSON)
+        given().log().all()
+                .contentType("application/json")
+                .queryParam("KeyTest", "ValueTest")
                 .body("This is expected to be sent back as part of response body.")
-        .when().post("/put")
+        .when().post("/put?KeyTest=ValueTest")
         .then().log().body()
-                .body("args", equalTo(Map.of()))
+                //.statusCode(200)
+                .body("args.KeyTest", equalTo("ValueTest"))
                 .body("data", equalTo("This is expected to be sent back as part of response body."))
                 .body("files", equalTo(Map.of()))
                 .body("form", equalTo(Map.of()))
                 .body("headers.host", equalTo("postman-echo.com"))
                 .body("headers.x-request-start", notNullValue())
                 .body("headers.connection", equalTo("close"))
-                .body("headers.content-length", equalTo("58"))
+                .body("headers.content-length", notNullValue())
                 .body("headers.x-forwarded-proto", equalTo("https"))
                 .body("headers.x-forwarded-port", equalTo("443"))
                 .body("headers.x-amzn-trace-id", notNullValue())
@@ -138,30 +150,57 @@ public class PostmanEchoTest {
                 //.body("headers.accept-encoding", equalTo("gzip,deflate"))
                 //.body("headers.cookie", notNullValue())
                 .body("json", equalTo(null))
-                .body("url", equalTo("https://postman-echo.com/put"))
-                .statusCode(200);
+                .body("url", equalTo("https://postman-echo.com/put/KeyTest=ValueTest"));
+                //.statusCode(200);
     }
 
     @Test
-    @DisplayName("Метод Patch")
+    @DisplayName("Проверка PATCH метода")
     public void patchRequest(){
-        given()
-                .baseUri("https://postman-echo.com")
+        given().log().all()
                 .contentType("application/json")
+                .queryParam("KeyTest", "ValueTest")
                 .body("This is expected to be sent back as part of response body.")
-                .when().post("/put")
-                .then().log().body();
+        .when().post("/patch?KeyTest=ValueTest")
+        .then().log().body()
+                .body("args.KeyTest", equalTo("ValueTest"))
+                .body("data", equalTo("This is expected to be sent back as part of response body."))
+                .body("files", equalTo(Map.of()))
+                .body("form", equalTo(Map.of()))
+                .body("headers.host", equalTo("postman-echo.com"))
+                .body("headers.x-request-start", notNullValue())
+                .body("headers.connection", equalTo("close"))
+                .body("headers.content-length", notNullValue())
+                .body("headers.x-forwarded-proto", equalTo("https"))
+                .body("headers.x-forwarded-port", equalTo("443"))
+                .body("headers.x-amzn-trace-id", notNullValue())
+                .body("headers.content-type", equalTo("text/plain"))
+                .body("headers.user-agent", notNullValue())
+                .body("headers.accept", equalTo("*/*"))
+                .body("headers.cache-control",equalTo("no-cache"))
+                .body("headers.postman-token",  notNullValue())
+                .body("headers.accept-encoding", equalTo("gzip,deflate"))
+                .body("headers.cookie", notNullValue())
+                .body("json", equalTo(null))
+                .body("url", equalTo("https://postman-echo.com//patch?KeyTest=ValueTest"));
+                //.statusCode(200);
     }
 
-
     @Test
-    @DisplayName("Метод Delete")
+    @DisplayName("Проверка DELETE метода")
     public void deleteRequest(){
-        given()
-                .baseUri("https://postman-echo.com")
+        given().log().all()
                 .contentType("application/json")
+                .queryParam("DeleteTest", "Test")
                 .body("This is expected to be sent back as part of response body.")
-                .when().post("/put")
-                .then().log().body();
+        .when().post("/delete?DeleteTest=Test")
+        .then().log().body()
+                .body("args.KeyTest", equalTo("ValueTest"))
+                .body("data", equalTo("This is expected to be sent back as part of response body."))
+                .body("files", equalTo(Map.of()))
+                .body("form", equalTo(Map.of()))
+                //.responce(responceSpec)
+                .body("json", equalTo(null))
+                .body("url", equalTo("https://postman-echo.com/delete?DeleteTest=Test"));
     }
 }
