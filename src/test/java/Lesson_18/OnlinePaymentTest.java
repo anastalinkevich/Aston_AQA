@@ -4,28 +4,17 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OnlinePaymentTest {
     OnlinePayment onlinePayment = new OnlinePayment(driver);
-
     private static WebDriver driver;
-    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
-    public String phone = "297777777";
-    public String sum = "10.55";
-
-    // Перед всеми тестами
+// Перед всеми тестами
     @BeforeAll
     static void setUpAll(){
         WebDriverManager.chromedriver().setup();
     }
-    // Перед каждым тестом
+// Перед каждым тестом
     @BeforeEach
     void setUp(){
         driver = new ChromeDriver();
@@ -37,8 +26,6 @@ public class OnlinePaymentTest {
             cookieLocator.click();
         }
     }
-
-    // Первый тест Lesson_15
     @DisplayName("Проверка наличия текста <Онлайн пополнение без комиссии>")
     @Test
     public void firstTest() {
@@ -46,16 +33,13 @@ public class OnlinePaymentTest {
         String expectedText = "Онлайн пополнение без комиссии";
         Assertions.assertEquals(expectedText, actualText, "Не удалось найти строку - <Онлайн пополнение без комиссии>");
     }
-
-    // Второй тест Lesson_15
+//Дополнить проверку лого главной страницы
     @DisplayName("Проверка лого Партеров")
     @Test
     void logo(){
         WebElement actualLogo = onlinePayment.findImagePartners();
         Assertions.assertTrue(actualLogo.isDisplayed(), "Логотипы партнеров не найдены");
     }
-
-    // Третий тест Lesson_15
     @DisplayName("Проверка перехода по ссылке")
     @Test
     public void testLink() {
@@ -64,17 +48,14 @@ public class OnlinePaymentTest {
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl(), "Переход не произошёл по linkText 'Подробнее о сервисе'"); // Проверяем, что произошла навигация на нужную страницу
         driver.navigate().back();// Возвращаемся на предыдущую страницу
     }
-
-    // Четвёртый тест Lesson_15
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
     @Test
     public void testButton() {
         onlinePayment.setForm("297777777", "12.55");
-//        Assertions.assertTrue(onlinePayment.frameConnect.isDisplayed(), "Нажатие на кнопку <Продолжить> не произошло");
+        Assertions.assertTrue(onlinePayment.isFormDisplayed(), "Нажатие на кнопку <Продолжить> не произошло");
     }
 
 // Тесты по лекции 16 "Тестирование с помощью Selenium WebDriver часть 2"
-
     @DisplayName("Проверка плейсхолдеров <Услуги связи>")
     @Test
     void testPlaceholderServices() {
@@ -102,27 +83,26 @@ public class OnlinePaymentTest {
     @Test
     public void testPlaceholderArrears(){
         onlinePayment.getClickArrears();
-
         Assertions.assertEquals("Номер счета на 2073", onlinePayment.getScoreArrears(), "Название в плейсхолдере не совпадает с 'Номер счета на 2073'");
         Assertions.assertEquals("Сумма", onlinePayment.getArrearsSum(), "Название в плейсхолдере не совпадает с 'Сумма'");
     }
 
 //Задание 2 по Lesson_16
-
     @DisplayName("Заполнение полей и переход на фрейм")
     @Test
     public void testFillFrame(){
         onlinePayment.setForm("297777777", "12.55");
         onlinePayment.getIframeConnect();
-        Assertions.assertEquals(sum + " BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальна не совпадает.");
+        Assertions.assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
         Assertions.assertEquals("Номер карты", onlinePayment.getCardNumber(), "Текст во фрейме не соответствует <Номер карты>");
         Assertions.assertEquals("Оплата: Услуги связи Номер:375297777777", onlinePayment.getNumberPhoneText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");
         Assertions.assertEquals("Срок действия", onlinePayment.getTimeInserted(), "Текст во фрейме не соответствует <Срок действия>");
         Assertions.assertEquals("CVC", onlinePayment.getTestCVC(), "Текст во фрейме не соответствует <CVC>");
         Assertions.assertEquals("Имя держателя (как на карте)", onlinePayment.getNameOwner(), "Текст во фрейме не соответствует <Имя держателя (на карте)>");
-        Assertions.assertEquals("Оплатить " + sum + " BYN", onlinePayment.getButtonLocatorSum(), "Текст во фрейме не соответствует <Оплатить 10.55 BYN>");
+        Assertions.assertEquals("Оплатить 12.55 BYN", onlinePayment.getButtonLocatorSum(), "Текст во фрейме не соответствует <Оплатить 10.55 BYN>");
+        //Добавить проверку лого
     }
-    // Закрываем веб-драйвер после выполнения теста
+// Закрываем веб-драйвер после выполнения теста
     @AfterEach
     public void tearDown() {
         if (driver != null) {

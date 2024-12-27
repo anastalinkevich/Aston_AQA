@@ -13,191 +13,173 @@ public class OnlinePayment {
     public static WebDriver driver;
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
-    // Локаторы класса OnlinePayment
+// Локаторы формы "Онлайн пополнение без комиссии"
     @FindBy(xpath = "//div[@class='pay__wrapper']/h2")
-    WebElement textLocator;
+    WebElement textLocator;         // Локатор заголовка "Онлайн пополнение без комиссии"
     @FindBy(className = "pay__partners")
-    WebElement partnersLocator;
+    WebElement partnersLocator;     // Локатор лого партнеров
     @FindBy(linkText = "Подробнее о сервисе")
-    WebElement linkText;
+    WebElement linkText;            // Локатор ссылки "Подробнее о сервисе"
     @FindBy(id = "connection-phone")
-    WebElement connectPhone;
+    WebElement connectPhone;        // Локатор плейсхолдера поля "Номер телефона". Меню "Услуги связи"
     @FindBy(id = "connection-sum")
-    WebElement connectSum;
+    WebElement connectSum;          // Локатор плейсхолдера поля "Сумма". Меню "Услуги связи"
     @FindBy(xpath = "//*[@id='pay-connection']/button")
-    WebElement submitButton;
+    WebElement submitButton;        // Локатор кнопки "Продолжить"
 
-    //Локаторы фрейма оплаты
-    @FindBy(xpath = "//div[@class='pay__wrapper']/h2")
-    WebElement frameConnect;
+//Локаторы фрейма продолжения оформления оплаты
     @FindBy(xpath = "//*[@class='bepaid-iframe']")
-    WebElement iframeConnect;
+    WebElement iframeConnect;       // Локатор фрейма продолжения оформления оплаты
     @FindBy(xpath = "//div[@class='pay-description__cost']/span[1]")
-    WebElement sumFrame; //Проверка суммы введенной на главной странице
+    WebElement sumFrame;            // Локатор плейсхолдера. Строка "12.55 BYN"
     @FindBy(xpath = "//*[@class='ng-tns-c46-1 ng-star-inserted']")
-    WebElement numberCardFrame; //Плейсхолдер фрейма Номер карты
+    WebElement numberCardFrame;     // Локатор плейсхолдера. Поле "Номер карты"
     @FindBy(xpath = "//div[@class='pay-description__text']/span[1]")
-    WebElement numberPhoneText;
+    WebElement numberPhoneText;     // Локатор плейсхолдера. Строка "Оплата: Услуги связи Номер:375297777777"
     @FindBy(xpath = "//*[@class='ng-tns-c46-4 ng-star-inserted']")
-    WebElement timeInserted;
+    WebElement timeInserted;        // Локатор плейсхолдера. Поле "Срок действия"
     @FindBy(xpath = "//*[@class='ng-tns-c46-5 ng-star-inserted']")
-    WebElement testCVC;
+    WebElement testCVC;             // Локатор плейсхолдера поля "CVC"
     @FindBy(xpath = "//*[@class='ng-tns-c46-3 ng-star-inserted']")
-    WebElement nameOwner;
+    WebElement nameOwner;           // Локатор плейсхолдера поля "Имя держателя (как на карте)"
     @FindBy(xpath = "//*[@class='colored disabled']")
-    WebElement buttonLocatorSum;
+    WebElement buttonLocatorSum;    // Локатор текста кнопки "Оплатить 12.55 BYN"
 
-    //Локаторы полей на главной странице
+//Локаторы полей на главной странице
     @FindBy(className = "select__header")
-    WebElement menuSelect;
+    WebElement menuSelect;          // Локатор нажатия на меню для вызова субменю
     @FindBy(xpath = "//p[@class='select__option' and text()='Рассрочка']")
-    WebElement scoreMenu;
+    WebElement scoreMenu;           // Локатор перехода на субменю "Рассрочка"
     @FindBy(xpath = "//p[@class='select__option' and text()='Домашний интернет']")
-    WebElement homeInternet;
+    WebElement homeInternet;        // Локатор перехода на субменю "Домашний интернет"
     @FindBy(xpath = "//p[@class='select__option' and text()='Задолженность']")
-    WebElement arrears;
+    WebElement arrears;             // Локатор перехода на субменю "Задолженность"
 
+// Локаторы субменю
     @FindBy(id = "internet-phone")
-    WebElement internetPhone;
+    WebElement internetPhone;       // Локатор поля "Номер абонента". Субменю "Домашний интернет"
     @FindBy(id = "internet-sum")
-    WebElement internetSum;
+    WebElement internetSum;         // Локатор поля "Сумма". Субменю "Домашний интернет"
     @FindBy(id = "score-instalment")
-    WebElement scoreInstalment;
+    WebElement scoreInstalment;     // Локатор поля "Номер счета на 44". Субменю "Рассрочка"
     @FindBy(id = "instalment-sum")
-    WebElement instalmentSum;
+    WebElement instalmentSum;       // Локатор поля "Сумма". Субменю "Рассрочка"
     @FindBy(id = "score-arrears")
-    WebElement scoreArrears;
+    WebElement scoreArrears;        // Локатор поля "Номер счета на 2073". Субменю "Задолженность"
     @FindBy(id = "arrears-sum")
-    WebElement arrearsSum;
+    WebElement arrearsSum;          // Локатор поля "Сумма". Субменю "Задолженность"
 
-    // Конструктор класса
+// Конструктор класса OnlinePayment
     public OnlinePayment(WebDriver driver) {
         PageFactory.initElements(driver, this);
         OnlinePayment.driver = driver;;
     }
-    // Метод первого теста. Нахождение заголовка
+// Нахождение заголовка "Онлайн пополнение без комиссии"
     public String findText(){
         return textLocator.getText().replaceAll("\n", " ");
     }
-
-    // Метод второго теста. Ищем лого партеров
+// Проверка лого партеров на главной странице
     public WebElement findImagePartners(){
         wait.until(ExpectedConditions.visibilityOf(partnersLocator));
         return partnersLocator; // Возвращаем найденный элемент
     }
-
-    //  Метод третьего теста. Проверяем переход по ссылке
+// Проверяем переход по ссылке "Подробнее о сервисе"
     public void clickLink(){
         wait.until(ExpectedConditions.elementToBeClickable(linkText));
         linkText.click();
     }
-    // Метод ввода номера телефона на основную страницу
-//    public void setPhone(String phone){
-//        connectPhone.sendKeys(phone);
-//    }
-
-    // Получить плейсхолдер ConnectionPhone
+// Получить плейсхолдер поля "Номер телефона". Меню "Услуги связи"
     public String getConnectPhone() {
         return connectPhone.getDomProperty("placeholder");
     }
-
-    // Метод ввода суммы на основной странице
+// Получить плейсхолдер поля "Сумма". Меню "Услуги связи"
     public String setSum(){
         return connectSum.getDomProperty("placeholder");
     }
-    //Метод нажатия кпопки Продолжить
-    public void clickButton(){
-        submitButton.click();
-    }
-    //Метод для нажатия на меню
+// Метод для нажатия на меню для вызова субменю
     public void clickMenu(){
         menuSelect.click();
     }
-    //Метод для субменю
-//    public void clickSubMenu(){
-//        subMenu.click();
-//    }
-    public void clickArrears(){
-        arrears.click();
-    }
-
-    // Получить плейсхолдер InternetPhone
+// Получить плейсхолдер поля "Номер абонента". Субменю "Домашний интернет"
     public String getInternetPhone() {
         return internetPhone.getDomProperty("placeholder");
     }
-    // Получить плейсхолдер InternetSum
+// Получить плейсхолдер поля "Сумма". Субменю "Домашний интернет"
     public String getInternetSum() {
         return internetSum.getDomProperty("placeholder");
     }
-    // Получить плейсхолдер
+// Получить плейсхолдер поля "Номер счета на 44". Субменю "Рассрочка"
     public String getScoreInstalment() {
         return scoreInstalment.getDomProperty("placeholder");
     }
-    // Получить плейсхолдер
+// Получить плейсхолдер поля "Сумма". Субменю "Рассрочка"
     public String getInstalmentSum() {
         return instalmentSum.getDomProperty("placeholder");
     }
-    // Получить плейсхолдер
+// Получить плейсхолдер поля "Номер счета на 2073". Субменю "Задолженность"
     public String getScoreArrears() {
         return scoreArrears.getDomProperty("placeholder");
     }
-    // Получить плейсхолдер
+// Получить плейсхолдер поля "Сумма". Субменю "Задолженность"
     public String getArrearsSum() {
         return arrearsSum.getDomProperty("placeholder");
     }
-    //Переход на субменю Домашний интернет
+// Переход на субменю "Домашний интернет"
     public void getClickInternet(){
         clickMenu();
         homeInternet.click();
     }
-    //Переход на субменю Рассрочка
+// Переход на субменю "Рассрочка"
     public void getClickScore(){
         clickMenu();
         scoreMenu.click();
     }
-    //Переход на субменю <Задолженность>
+// Переход на субменю "Задолженность"
     public void getClickArrears(){
         clickMenu();
         arrears.click();
     }
-    //Заполнение полей формы на главной странице
+// Заполнение полей формы на главной странице
     public void setForm(String phone, String cost){
         connectPhone.sendKeys(phone);
         connectSum.sendKeys(cost);
         submitButton.click();
     }
-    //Получение текста внутри локатора оплаты с фрейма
+// Проверка плейсхолдера. Строка "12.55 BYN"
     public String getSumFrame(){
         return sumFrame.getText();
     }
-    //Получение текста внутри локатора Номера карты с фрейма
+// Проверка плейсхолдера. Поле "Номер карты"
     public String getCardNumber(){
         return numberCardFrame.getText();
     }
-    //Получение текста внутри локатора
+// Проверка плейсхолдера. Строка "Оплата: Услуги связи Номер:375297777777"
     public String getNumberPhoneText(){
         return numberPhoneText.getText();
     }
-    //Получение текста внутри локатора
+// Проверка плейсхолдера. Поле "Срок действия"
     public String getTimeInserted(){
         return timeInserted.getText();
     }
-    //Получение текста внутри локатора
+// Проверка плейсхолдера. Поле "CVC"
     public String getTestCVC(){
         return testCVC.getText();
     }
-    //Получение текста внутри локатора
+// Проверка плейсхолдера. Поле "Имя держателя (как на карте)"
     public String getNameOwner(){
         return nameOwner.getText();
     }
-    //Получение текста внутри локатора
+// Проверка плейсхолдера кнопки "Оплатить 12.55 BYN"
     public String getButtonLocatorSum(){
         return buttonLocatorSum.getText();
     }
-
+// Ожидание фрейма для продолжения оформления оплаты и переход на него
     public void getIframeConnect(){
         WebElement iFrame = wait.until(ExpectedConditions.elementToBeClickable(iframeConnect)); // Явное ожидание фрейма и переход для дальнейшей оплаты
         driver.switchTo().frame(iFrame);
     }
-
+// Отображение фрейма продолжения оформления оплаты после нажатия кнопки "Продолжить"
+    public boolean isFormDisplayed(){
+        return iframeConnect.isDisplayed();
+    }
 }
