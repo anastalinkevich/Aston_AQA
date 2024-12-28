@@ -1,5 +1,6 @@
 package Lesson_18;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OnlinePayment {
     public static WebDriver driver;
@@ -44,8 +47,10 @@ public class OnlinePayment {
     WebElement nameOwner;           // Локатор плейсхолдера поля "Имя держателя (как на карте)"
     @FindBy(xpath = "//*[@class='colored disabled']")
     WebElement buttonLocatorSum;    // Локатор текста кнопки "Оплатить 12.55 BYN"
+    @FindBy(xpath = "//div[@class='cards-brands ng-tns-c46-1']")
+    WebElement logoPartnersFrame;   //Локатор лого партнеров на фрейме оплаты
 
-//Локаторы полей на главной странице
+//Локаторы полей в "Онлайн пополнение без комиссии"
     @FindBy(className = "select__header")
     WebElement menuSelect;          // Локатор нажатия на меню для вызова субменю
     @FindBy(xpath = "//p[@class='select__option' and text()='Рассрочка']")
@@ -78,11 +83,23 @@ public class OnlinePayment {
     public String findText(){
         return textLocator.getText().replaceAll("\n", " ");
     }
-// Проверка лого партеров на главной странице
-    public WebElement findImagePartners(){
-        wait.until(ExpectedConditions.visibilityOf(partnersLocator));
-        return partnersLocator; // Возвращаем найденный элемент
+// Метод для получения списка альтернативных текстов логотипов партнеров в 'Онлайн пополнение без комиссии'
+    public List<String> getPartnersLogoAltTexts() {
+        List<String> paymentLogos = new ArrayList<>();
+        List<WebElement> images = partnersLocator.findElements(By.tagName("img"));   // Находим все изображения внутри партнера
+        for (WebElement img : images) {
+            String altText = img.getAttribute("alt");                          // Получаем атрибут alt
+            if (!altText.isEmpty()) {                                                // Проверяем, что атрибут не пустой
+                paymentLogos.add(altText);
+            }
+        }
+        return paymentLogos;
     }
+// Проверка лого партеров на главной странице
+//    public WebElement findImagePartners(){
+//        wait.until(ExpectedConditions.visibilityOf(partnersLocator));
+//        return partnersLocator; // Возвращаем найденный элемент
+//    }
 // Проверяем переход по ссылке "Подробнее о сервисе"
     public void clickLink(){
         wait.until(ExpectedConditions.elementToBeClickable(linkText));
@@ -172,6 +189,20 @@ public class OnlinePayment {
 // Проверка плейсхолдера кнопки "Оплатить 12.55 BYN"
     public String getButtonLocatorSum(){
         return buttonLocatorSum.getText();
+    }
+// Метод для получения списка логотипов партнеров во фрейме оплаты
+    public List<String> getPartnersLogoFrame() {
+        List<String> paymentLogos = new ArrayList<>();
+        WebElement element = logoPartnersFrame;
+        List<WebElement> images = element.findElements(By.tagName("img")); // Находим все изображения внутри элемента
+
+        for (WebElement img : images) {
+            String textSrc = img.getAttribute("src");
+            if (textSrc != null && !textSrc.isEmpty()) {
+                paymentLogos.add(textSrc);
+            }
+        }
+        return paymentLogos;
     }
 // Ожидание фрейма для продолжения оформления оплаты и переход на него
     public void getIframeConnect(){
