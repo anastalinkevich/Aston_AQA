@@ -77,7 +77,7 @@ public class OnlinePayment {
 // Конструктор класса OnlinePayment
     public OnlinePayment(WebDriver driver) {
         PageFactory.initElements(driver, this);
-        OnlinePayment.driver = driver;;
+        OnlinePayment.driver = driver;
     }
 // Нахождение заголовка "Онлайн пополнение без комиссии"
     public String findText(){
@@ -89,6 +89,7 @@ public class OnlinePayment {
         List<WebElement> images = partnersLocator.findElements(By.tagName("img"));   // Находим все изображения внутри партнера
         for (WebElement img : images) {
             String altText = img.getAttribute("alt");                          // Получаем атрибут alt
+            assert altText != null;
             if (!altText.isEmpty()) {                                                // Проверяем, что атрибут не пустой
                 paymentLogos.add(altText);
             }

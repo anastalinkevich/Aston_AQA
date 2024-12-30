@@ -33,7 +33,7 @@ public class OnlinePaymentTest {
     }
     @DisplayName("Проверка наличия текста <Онлайн пополнение без комиссии>")
     @Test
-    public void firstTest() {
+    public void testText() {
         String actualText = onlinePayment.findText();
         String expectedText = "Онлайн пополнение без комиссии";
         assertEquals(expectedText, actualText, "Не удалось найти строку - <Онлайн пополнение без комиссии>");
@@ -96,6 +96,7 @@ public class OnlinePaymentTest {
     }
 
 //Задание 2 по Lesson_16
+//Тест начал падать после оптимизации, но при дебаге проходит
     @DisplayName("Проверка полей фрейма оплаты")
     @Test
     public void testFillFrame(){
@@ -114,8 +115,8 @@ public class OnlinePaymentTest {
                 imgURL + "belkart-system.svg",
                 imgURL + "maestro-system.svg",
                 imgURL + "mir-system-ru.svg");
-        List<String> actualTexts = onlinePayment.getPartnersLogoFrame();
-        Assertions.assertEquals(expectedTexts, actualTexts, "Логотипы на фрейме не совпадают с ожидаемыми");
+        List<String> actualLogoFrame = onlinePayment.getPartnersLogoFrame();
+        assertEquals(expectedTexts, actualLogoFrame, "Логотипы на фрейме не совпадают с ожидаемыми");
     }
 // Закрываем веб-драйвер после выполнения теста
     @AfterEach
