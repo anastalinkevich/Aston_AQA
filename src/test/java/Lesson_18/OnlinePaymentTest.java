@@ -1,36 +1,28 @@
 package Lesson_18;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Flaky;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.List;
 
+import static io.qameta.allure.SeverityLevel.MINOR;
+import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OnlinePaymentTest {
+public class OnlinePaymentTest extends BaseTest {
     OnlinePayment onlinePayment = new OnlinePayment(driver);
     private static WebDriver driver;
-    final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/";
+    final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/"; // Переменная для проверки иконок на фрейме
 
-// Перед всеми тестами
-    @BeforeAll
-    static void setUpAll(){
-        WebDriverManager.chromedriver().setup();
-    }
-// Перед каждым тестом
-    @BeforeEach
-    void setUp(){
-        driver = new ChromeDriver();
-        onlinePayment = new OnlinePayment(driver);
-        driver.get("https://www.mts.by/?hash-offset=70&hash-dur=1300#pay-section");
-        driver.manage().window().maximize();
-        WebElement cookieLocator = driver.findElement(By.xpath("//*[@id='cookie-agree']"));
-        if (cookieLocator.isDisplayed()) {
-            cookieLocator.click();
-        }
-    }
+
+    @Owner("Linkevich Anastasiya")
+    @Severity(MINOR)
+    @Epic("Web interface")
     @DisplayName("Проверка наличия текста <Онлайн пополнение без комиссии>")
     @Test
     public void testText() {
@@ -38,7 +30,8 @@ public class OnlinePaymentTest {
         String expectedText = "Онлайн пополнение без комиссии";
         assertEquals(expectedText, actualText, "Не удалось найти строку - <Онлайн пополнение без комиссии>");
     }
-//Дополнить проверку лого главной страницы
+    @Severity(MINOR)
+    @Epic("Web interface")
     @DisplayName("Проверка лого Партнеров в 'Онлайн пополнение без комиссии'")
     @Test
     void logoPartners() {
@@ -47,7 +40,8 @@ public class OnlinePaymentTest {
 
         assertEquals(expectedAltTexts, actualAltTexts, "Список alt текстов не совпадает с ожидаемыми");
     }
-
+    @Severity(MINOR)
+    @Epic("Web interface")
     @DisplayName("Проверка перехода по ссылке")
     @Test
     public void testLink() {
@@ -56,6 +50,9 @@ public class OnlinePaymentTest {
         assertEquals(expectedUrl, driver.getCurrentUrl(), "Переход не произошёл по linkText 'Подробнее о сервисе'"); // Проверяем, что произошла навигация на нужную страницу
         driver.navigate().back();// Возвращаемся на предыдущую страницу
     }
+    @Flaky
+    @Severity(MINOR)
+    @Epic("Web interface")
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
     @Test
     public void testButton() {
@@ -64,13 +61,14 @@ public class OnlinePaymentTest {
     }
 
 // Тесты по лекции 16 "Тестирование с помощью Selenium WebDriver часть 2"
+    @Severity(MINOR)
     @DisplayName("Проверка плейсхолдеров <Услуги связи>")
     @Test
     void testPlaceholderServices() {
         assertEquals("Номер телефона", onlinePayment.getConnectPhone(), "Название в плейсхолдере не совпадает с 'Номер телефона'");         // Проверить значение
         assertEquals("Сумма", onlinePayment.setSum(), "Название в плейсхолдере не совпадает с 'Сумма'");         // Проверить значение
     }
-
+    @Severity(MINOR)
     @DisplayName("Проверка плейсхолдеров <Домашний интернет>")
     @Test
     public void testPlaceholderInternet(){
@@ -78,7 +76,7 @@ public class OnlinePaymentTest {
         assertEquals("Номер абонента", onlinePayment.getInternetPhone(), "Название в плейсхолдере не совпадает с 'Номер абонента'");
         assertEquals("Сумма", onlinePayment.getInternetSum(), "Название в плейсхолдере не совпадает с 'Сумма'");
     }
-
+    @Severity(MINOR)
     @DisplayName("Проверка плейсхолдеров <Рассрочка>")
     @Test
     public void testPlaceholderScore(){
@@ -97,9 +95,12 @@ public class OnlinePaymentTest {
 
 //Задание 2 по Lesson_16
 //Тест начал падать после оптимизации, но при дебаге проходит
+    @Flaky
+    @Severity(NORMAL)
     @DisplayName("Проверка полей фрейма оплаты")
     @Test
     public void testFillFrame(){
+        //Добавить  Allure.step
         onlinePayment.setForm("297777777", "12.55");
         onlinePayment.getIframeConnect();
         assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
@@ -117,12 +118,5 @@ public class OnlinePaymentTest {
                 imgURL + "mir-system-ru.svg");
         List<String> actualLogoFrame = onlinePayment.getPartnersLogoFrame();
         assertEquals(expectedTexts, actualLogoFrame, "Логотипы на фрейме не совпадают с ожидаемыми");
-    }
-// Закрываем веб-драйвер после выполнения теста
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
     }
 }
