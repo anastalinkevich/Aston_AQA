@@ -1,5 +1,6 @@
 package Lesson_18;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,6 +16,10 @@ import java.util.List;
 public class OnlinePayment {
     public static WebDriver driver;
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+
+// Локатор согласия с сookie
+    @FindBy(xpath = "//*[@id='cookie-agree']")
+    WebElement cookieAgree;
 
 // Локаторы формы "Онлайн пополнение без комиссии"
     @FindBy(xpath = "//div[@class='pay__wrapper']/h2")
@@ -96,11 +101,7 @@ public class OnlinePayment {
         }
         return paymentLogos;
     }
-// Проверка лого партеров на главной странице
-//    public WebElement findImagePartners(){
-//        wait.until(ExpectedConditions.visibilityOf(partnersLocator));
-//        return partnersLocator; // Возвращаем найденный элемент
-//    }
+
 // Проверяем переход по ссылке "Подробнее о сервисе"
     public void clickLink(){
         wait.until(ExpectedConditions.elementToBeClickable(linkText));
@@ -111,10 +112,12 @@ public class OnlinePayment {
         return connectPhone.getDomProperty("placeholder");
     }
 // Получить плейсхолдер поля "Сумма". Меню "Услуги связи"
+    @Step("Получение плейсхолдера поля Сумма (Меню: Услуги связи)")
     public String setSum(){
         return connectSum.getDomProperty("placeholder");
     }
 // Метод для нажатия на меню для вызова субменю
+    @Step("Клик на меню для вызова субменю")
     public void clickMenu(){
         menuSelect.click();
     }

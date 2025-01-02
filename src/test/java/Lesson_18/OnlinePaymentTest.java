@@ -1,12 +1,10 @@
 package Lesson_18;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Flaky;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.*;
 
 import java.util.List;
 
@@ -14,11 +12,8 @@ import static io.qameta.allure.SeverityLevel.MINOR;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OnlinePaymentTest extends BaseTest {
-    OnlinePayment onlinePayment = new OnlinePayment(driver);
-    private static WebDriver driver;
+public class OnlinePaymentTest extends BaseTest{
     final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/"; // Переменная для проверки иконок на фрейме
-
 
     @Owner("Linkevich Anastasiya")
     @Severity(MINOR)
@@ -30,6 +25,7 @@ public class OnlinePaymentTest extends BaseTest {
         String expectedText = "Онлайн пополнение без комиссии";
         assertEquals(expectedText, actualText, "Не удалось найти строку - <Онлайн пополнение без комиссии>");
     }
+
     @Severity(MINOR)
     @Epic("Web interface")
     @DisplayName("Проверка лого Партнеров в 'Онлайн пополнение без комиссии'")
@@ -40,6 +36,7 @@ public class OnlinePaymentTest extends BaseTest {
 
         assertEquals(expectedAltTexts, actualAltTexts, "Список alt текстов не совпадает с ожидаемыми");
     }
+
     @Severity(MINOR)
     @Epic("Web interface")
     @DisplayName("Проверка перехода по ссылке")
@@ -50,6 +47,7 @@ public class OnlinePaymentTest extends BaseTest {
         assertEquals(expectedUrl, driver.getCurrentUrl(), "Переход не произошёл по linkText 'Подробнее о сервисе'"); // Проверяем, что произошла навигация на нужную страницу
         driver.navigate().back();// Возвращаемся на предыдущую страницу
     }
+
     @Flaky
     @Severity(MINOR)
     @Epic("Web interface")
@@ -68,6 +66,7 @@ public class OnlinePaymentTest extends BaseTest {
         assertEquals("Номер телефона", onlinePayment.getConnectPhone(), "Название в плейсхолдере не совпадает с 'Номер телефона'");         // Проверить значение
         assertEquals("Сумма", onlinePayment.setSum(), "Название в плейсхолдере не совпадает с 'Сумма'");         // Проверить значение
     }
+
     @Severity(MINOR)
     @DisplayName("Проверка плейсхолдеров <Домашний интернет>")
     @Test
@@ -76,6 +75,7 @@ public class OnlinePaymentTest extends BaseTest {
         assertEquals("Номер абонента", onlinePayment.getInternetPhone(), "Название в плейсхолдере не совпадает с 'Номер абонента'");
         assertEquals("Сумма", onlinePayment.getInternetSum(), "Название в плейсхолдере не совпадает с 'Сумма'");
     }
+
     @Severity(MINOR)
     @DisplayName("Проверка плейсхолдеров <Рассрочка>")
     @Test
