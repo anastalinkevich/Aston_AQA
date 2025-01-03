@@ -16,6 +16,7 @@ import java.util.List;
 public class OnlinePayment {
     public static WebDriver driver;
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+    final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/"; // Переменная для проверки иконок на фрейме
 
 // Локатор согласия с сookie
     @FindBy(xpath = "//*[@id='cookie-agree']")
@@ -36,8 +37,13 @@ public class OnlinePayment {
     WebElement submitButton;        // Локатор кнопки "Продолжить"
 
 //Локаторы фрейма продолжения оформления оплаты
-    @FindBy(xpath = "//*[@class='bepaid-iframe']")
+    @FindBy(xpath = "//iframe[@src='https://checkout.bepaid.by/widget_v2/index.html']")
     WebElement iframeConnect;       // Локатор фрейма продолжения оформления оплаты
+    @FindBy(xpath = "//div[@class='app-wrapper__content']")
+    WebElement onlinePaymentForm;
+    @FindBy(xpath = "//*[@class='bepaid-iframe']")
+    WebElement newFrameConnect;
+
     @FindBy(xpath = "//div[@class='pay-description__cost']/span[1]")
     WebElement sumFrame;            // Локатор плейсхолдера. Строка "12.55 BYN"
     @FindBy(xpath = "//*[@class='ng-tns-c46-1 ng-star-inserted']")
@@ -209,12 +215,18 @@ public class OnlinePayment {
         return paymentLogos;
     }
 // Ожидание фрейма для продолжения оформления оплаты и переход на него
-    public void getIframeConnect(){
-        WebElement iFrame = wait.until(ExpectedConditions.elementToBeClickable(iframeConnect)); // Явное ожидание фрейма и переход для дальнейшей оплаты
-        driver.switchTo().frame(iFrame);
+    public boolean getIframeConnect(){
+       // Явное ожидание фрейма и переход для дальнейшей оплаты
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(newFrameConnect));
+         WebElement formElement = wait.until(ExpectedConditions.visibilityOf(newFrameConnect));
+        return formElement.isDisplayed();
     }
 // Отображение фрейма продолжения оформления оплаты после нажатия кнопки "Продолжить"
     public boolean isFormDisplayed(){
+        //wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iframeConnect));
+        wait.until(ExpectedConditions.elementToBeClickable(onlinePaymentForm));
+
+        wait.until(ExpectedConditions.elementToBeClickable(iframeConnect));
         return iframeConnect.isDisplayed();
     }
 }

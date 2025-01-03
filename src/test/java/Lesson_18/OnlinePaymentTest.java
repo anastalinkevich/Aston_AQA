@@ -1,23 +1,19 @@
 package Lesson_18;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Flaky;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Severity;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-
 import java.util.List;
-
 import static io.qameta.allure.SeverityLevel.MINOR;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OnlinePaymentTest extends BaseTest{
-    final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/"; // Переменная для проверки иконок на фрейме
+
 
     @Owner("Linkevich Anastasiya")
     @Severity(MINOR)
-    @Epic("Web interface")
+    @Tag("Задание по лекции 15")
     @DisplayName("Проверка наличия текста <Онлайн пополнение без комиссии>")
     @Test
     public void testText() {
@@ -27,7 +23,7 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
-    @Epic("Web interface")
+    @Tag("Задание по лекции 15")
     @DisplayName("Проверка лого Партнеров в 'Онлайн пополнение без комиссии'")
     @Test
     void logoPartners() {
@@ -38,7 +34,7 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
-    @Epic("Web interface")
+    @Tag("Задание по лекции 15")
     @DisplayName("Проверка перехода по ссылке")
     @Test
     public void testLink() {
@@ -50,16 +46,17 @@ public class OnlinePaymentTest extends BaseTest{
 
     @Flaky
     @Severity(MINOR)
-    @Epic("Web interface")
+    @Tag("Задание по лекции 15")
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
     @Test
     public void testButton() {
         onlinePayment.setForm("297777777", "12.55");
-        Assertions.assertTrue(onlinePayment.isFormDisplayed(), "Нажатие на кнопку <Продолжить> не произошло");
+        assertTrue(onlinePayment.getIframeConnect(), "Нажатие на кнопку <Продолжить> не произошло");
     }
 
 // Тесты по лекции 16 "Тестирование с помощью Selenium WebDriver часть 2"
     @Severity(MINOR)
+    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Услуги связи>")
     @Test
     void testPlaceholderServices() {
@@ -68,6 +65,7 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
+    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Домашний интернет>")
     @Test
     public void testPlaceholderInternet(){
@@ -77,6 +75,7 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
+    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Рассрочка>")
     @Test
     public void testPlaceholderScore(){
@@ -85,6 +84,7 @@ public class OnlinePaymentTest extends BaseTest{
         assertEquals("Сумма", onlinePayment.getInstalmentSum(), "Название в плейсхолдере не совпадает с 'Сумма'");
     }
 
+    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Задолженность>")
     @Test
     public void testPlaceholderArrears(){
@@ -97,12 +97,13 @@ public class OnlinePaymentTest extends BaseTest{
 //Тест начал падать после оптимизации, но при дебаге проходит
     @Flaky
     @Severity(NORMAL)
+    @Tag("Задание по лекции 16")
     @DisplayName("Проверка полей фрейма оплаты")
+    @Description("Заполнение полей оплаты (номер телефона, сумма оплаты). Переход на фрейм дальнейшей оплаты. Проверка плейсхолдеров на фрейме, логотипы партеров.")
     @Test
     public void testFillFrame(){
-        //Добавить  Allure.step
         onlinePayment.setForm("297777777", "12.55");
-        onlinePayment.getIframeConnect();
+        assertTrue(onlinePayment.getIframeConnect(), "Нажатие на кнопку <Продолжить> не произошло");
         assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
         assertEquals("Номер карты", onlinePayment.getCardNumber(), "Текст во фрейме не соответствует <Номер карты>");
         assertEquals("Оплата: Услуги связи Номер:375297777777", onlinePayment.getNumberPhoneText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");
@@ -110,13 +111,13 @@ public class OnlinePaymentTest extends BaseTest{
         assertEquals("CVC", onlinePayment.getTestCVC(), "Текст во фрейме не соответствует <CVC>");
         assertEquals("Имя держателя (как на карте)", onlinePayment.getNameOwner(), "Текст во фрейме не соответствует <Имя держателя (на карте)>");
         assertEquals("Оплатить 12.55 BYN", onlinePayment.getButtonLocatorSum(), "Текст во фрейме не соответствует <Оплатить 10.55 BYN>");
-        List<String> expectedTexts = List.of(
-                imgURL + "visa-system.svg",
-                imgURL + "mastercard-system.svg",
-                imgURL + "belkart-system.svg",
-                imgURL + "maestro-system.svg",
-                imgURL + "mir-system-ru.svg");
+        List<String> expectedLogoFrame = List.of(
+                onlinePayment.imgURL + "visa-system.svg",
+                onlinePayment.imgURL + "mastercard-system.svg",
+                onlinePayment.imgURL + "belkart-system.svg",
+                onlinePayment.imgURL + "maestro-system.svg",
+                onlinePayment.imgURL + "mir-system-ru.svg");
         List<String> actualLogoFrame = onlinePayment.getPartnersLogoFrame();
-        assertEquals(expectedTexts, actualLogoFrame, "Логотипы на фрейме не совпадают с ожидаемыми");
+        assertEquals(expectedLogoFrame, actualLogoFrame, "Логотипы на фрейме не совпадают с ожидаемыми");
     }
 }

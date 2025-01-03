@@ -27,8 +27,6 @@ public abstract class BaseTest {
         WebElement cookieLocator = onlinePayment.cookieAgree;
         if (cookieLocator.isDisplayed()) {
             cookieLocator.click();
-        } else {
-            System.out.println("Cookie не найдены");
         }
     }
 
