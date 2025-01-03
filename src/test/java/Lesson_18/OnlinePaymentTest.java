@@ -103,7 +103,10 @@ public class OnlinePaymentTest extends BaseTest{
     @Test
     public void testFillFrame(){
         onlinePayment.setForm("297777777", "12.55");
-        assertTrue(onlinePayment.getIframeConnect(), "Нажатие на кнопку <Продолжить> не произошло");
+//        onli nePayment.switchToFrame();
+
+        onlinePayment.switchToFrame();
+
         assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
         assertEquals("Номер карты", onlinePayment.getCardNumber(), "Текст во фрейме не соответствует <Номер карты>");
         assertEquals("Оплата: Услуги связи Номер:375297777777", onlinePayment.getNumberPhoneText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");

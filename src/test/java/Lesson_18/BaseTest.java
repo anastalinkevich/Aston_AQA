@@ -14,7 +14,7 @@ public abstract class BaseTest {
     protected static WebDriver driver;
     protected String baseUrlOnlinePay = "https://www.mts.by/?hash-offset=70&hash-dur=1300#pay-section";
 
-    @Step("Start the application")
+    @Step("Открытие драйвера. Начало теста")
     @BeforeEach
     void setUp(){
         WebDriverManager.chromedriver().setup();
@@ -30,7 +30,7 @@ public abstract class BaseTest {
         }
     }
 
-    @Step("Stop the application")
+    @Step("Закрытие драйвера. Конец теста")
     @AfterEach
     public void tearDown() {
         if (driver != null) {

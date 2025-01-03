@@ -90,11 +90,13 @@ public class OnlinePayment {
         PageFactory.initElements(driver, this);
         OnlinePayment.driver = driver;
     }
-// Нахождение заголовка "Онлайн пополнение без комиссии"
+
+    @Step("Нахождение заголовка <Онлайн пополнение без комиссии>")
     public String findText(){
         return textLocator.getText().replaceAll("\n", " ");
     }
-// Метод для получения списка альтернативных текстов логотипов партнеров в 'Онлайн пополнение без комиссии'
+
+    @Step("Получения списка альтернативных текстов логотипов партнеров в 'Онлайн пополнение без комиссии'")
     public List<String> getPartnersLogoAltTexts() {
         List<String> paymentLogos = new ArrayList<>();
         List<WebElement> images = partnersLocator.findElements(By.tagName("img"));   // Находим все изображения внутри партнера
@@ -108,99 +110,113 @@ public class OnlinePayment {
         return paymentLogos;
     }
 
-// Проверяем переход по ссылке "Подробнее о сервисе"
+    @Step("Переход по ссылке <Подробнее о сервисе>")
     public void clickLink(){
         wait.until(ExpectedConditions.elementToBeClickable(linkText));
         linkText.click();
     }
-// Получить плейсхолдер поля "Номер телефона". Меню "Услуги связи"
+    @Step("Получить плейсхолдер поля <Номер телефона>. Меню <Услуги связи>")
     public String getConnectPhone() {
         return connectPhone.getDomProperty("placeholder");
     }
-// Получить плейсхолдер поля "Сумма". Меню "Услуги связи"
+
     @Step("Получение плейсхолдера поля Сумма (Меню: Услуги связи)")
     public String setSum(){
         return connectSum.getDomProperty("placeholder");
     }
-// Метод для нажатия на меню для вызова субменю
+
     @Step("Клик на меню для вызова субменю")
     public void clickMenu(){
         menuSelect.click();
     }
-// Получить плейсхолдер поля "Номер абонента". Субменю "Домашний интернет"
+
+    @Step("Получить плейсхолдер поля <Номер абонента>. Субменю <Домашний интернет>")
     public String getInternetPhone() {
         return internetPhone.getDomProperty("placeholder");
     }
-// Получить плейсхолдер поля "Сумма". Субменю "Домашний интернет"
+
+    @Step("Получить плейсхолдер поля <Сумма>. Субменю <Домашний интернет>")
     public String getInternetSum() {
         return internetSum.getDomProperty("placeholder");
     }
-// Получить плейсхолдер поля "Номер счета на 44". Субменю "Рассрочка"
+
+    @Step("Получить плейсхолдер поля <Номер счета на 44>. Субменю <Рассрочка>")
     public String getScoreInstalment() {
         return scoreInstalment.getDomProperty("placeholder");
     }
-// Получить плейсхолдер поля "Сумма". Субменю "Рассрочка"
+
+    @Step("Получить плейсхолдер поля <Сумма>. Субменю <Рассрочка>")
     public String getInstalmentSum() {
         return instalmentSum.getDomProperty("placeholder");
     }
-// Получить плейсхолдер поля "Номер счета на 2073". Субменю "Задолженность"
+
+    @Step("Получить плейсхолдер поля <Номер счета на 2073>. Субменю <Задолженность>")
     public String getScoreArrears() {
         return scoreArrears.getDomProperty("placeholder");
     }
-// Получить плейсхолдер поля "Сумма". Субменю "Задолженность"
+
+    @Step("Получить плейсхолдер поля <Сумма>. Субменю <Задолженность>")
     public String getArrearsSum() {
         return arrearsSum.getDomProperty("placeholder");
     }
-// Переход на субменю "Домашний интернет"
+
+    @Step("Переход на субменю <Домашний интернет>")
     public void getClickInternet(){
         clickMenu();
         homeInternet.click();
     }
-// Переход на субменю "Рассрочка"
+    @Step("Переход на субменю <Рассрочка>")
     public void getClickScore(){
         clickMenu();
         scoreMenu.click();
     }
-// Переход на субменю "Задолженность"
+    @Step("Переход на субменю <Задолженность>")
     public void getClickArrears(){
         clickMenu();
         arrears.click();
     }
-// Заполнение полей формы на главной странице
+    @Step("Заполнение полей формы на главной странице")
     public void setForm(String phone, String cost){
         connectPhone.sendKeys(phone);
         connectSum.sendKeys(cost);
         submitButton.click();
     }
-// Проверка плейсхолдера. Строка "12.55 BYN"
+    @Step("Проверка плейсхолдера. Строка <12.55 BYN>")
     public String getSumFrame(){
         return sumFrame.getText();
     }
-// Проверка плейсхолдера. Поле "Номер карты"
+
+    @Step("Проверка плейсхолдера. Поле <Номер карты>")
     public String getCardNumber(){
         return numberCardFrame.getText();
     }
-// Проверка плейсхолдера. Строка "Оплата: Услуги связи Номер:375297777777"
+
+    @Step("Проверка плейсхолдера. Строка <Оплата: Услуги связи Номер:375297777777>")
     public String getNumberPhoneText(){
         return numberPhoneText.getText();
     }
-// Проверка плейсхолдера. Поле "Срок действия"
+
+    @Step("Проверка плейсхолдера. Поле <Срок действия>")
     public String getTimeInserted(){
         return timeInserted.getText();
     }
-// Проверка плейсхолдера. Поле "CVC"
+
+    @Step("Проверка плейсхолдера. Поле <CVC>")
     public String getTestCVC(){
         return testCVC.getText();
     }
-// Проверка плейсхолдера. Поле "Имя держателя (как на карте)"
+
+    @Step("Проверка плейсхолдера. Поле <Имя держателя (как на карте)>")
     public String getNameOwner(){
         return nameOwner.getText();
     }
-// Проверка плейсхолдера кнопки "Оплатить 12.55 BYN"
+
+    @Step("Проверка плейсхолдера кнопки <Оплатить 12.55 BYN>")
     public String getButtonLocatorSum(){
         return buttonLocatorSum.getText();
     }
-// Метод для получения списка логотипов партнеров во фрейме оплаты
+
+    @Step("Метод для получения списка логотипов партнеров во фрейме оплаты")
     public List<String> getPartnersLogoFrame() {
         List<String> paymentLogos = new ArrayList<>();
         WebElement element = logoPartnersFrame;
@@ -214,19 +230,37 @@ public class OnlinePayment {
         }
         return paymentLogos;
     }
-// Ожидание фрейма для продолжения оформления оплаты и переход на него
+
+    @Step("Ожидание фрейма для продолжения оформления оплаты и переход на него")
     public boolean getIframeConnect(){
        // Явное ожидание фрейма и переход для дальнейшей оплаты
-        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(newFrameConnect));
-         WebElement formElement = wait.until(ExpectedConditions.visibilityOf(newFrameConnect));
+        //wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameConnect));
+        WebElement formElement = wait.until(ExpectedConditions.visibilityOf(frameConnect));
         return formElement.isDisplayed();
     }
-// Отображение фрейма продолжения оформления оплаты после нажатия кнопки "Продолжить"
-    public boolean isFormDisplayed(){
-        //wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iframeConnect));
-        wait.until(ExpectedConditions.elementToBeClickable(onlinePaymentForm));
+    @FindBy(xpath = "//div[@class='pay__wrapper']/h2")
+    WebElement frameConnect;
 
-        wait.until(ExpectedConditions.elementToBeClickable(iframeConnect));
-        return iframeConnect.isDisplayed();
+    @Step("Отображение фрейма продолжения оформления оплаты после нажатия кнопки \"Продолжить\"")
+    public void switchToFrame(){
+        // Инициализация WebElement с указанным локатором
+        WebElement frameElement = driver.findElement(By.xpath("//div[@class='pay__wrapper']/h2"));
+
+        // Ждем пока фрейм станет доступен и переключимся на него
+        WebElement visibleFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(frameElement));
+
+        // Переключаем контекст на найденный фрейм
+        driver.switchTo().frame(visibleFrame);
+
+//        WebElement formElement = wait.until(ExpectedConditions.visibilityOf(frameConnect));
+//        driver.switchTo().frame(formElement);
     }
+
+    public void formToBeClickable(){
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameConnect));
+        //wait.until(ExpectedConditions.visibilityOf(frameConnect));
+    }
+    private final By paymentIframe = By.className("bepaid-iframe");
+    private final By onlinePaymentCreditCardForm = By.xpath("//div[@class='app-wrapper__content']");
 }
