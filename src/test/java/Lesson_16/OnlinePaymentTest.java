@@ -39,7 +39,7 @@ public class OnlinePaymentTest {
     }
 
 // Первый тест Lesson_15
-//Так и не поняла как этот тест сделать :D
+
     @DisplayName("Проверка наличия текста 'Онлайн пополнение без комиссии'")
     @Test
     public void firstTest() {
@@ -170,35 +170,22 @@ public class OnlinePaymentTest {
         onlinePayment.setSum(sum);
         onlinePayment.clickButton();
 // Явное ожидание фрейма и переход для дальнейшей оплаты
-        WebElement iFrame = wait.until(ExpectedConditions.elementToBeClickable(onlinePayment.iframeConnect));
+        WebElement iFrame = wait.until(ExpectedConditions.visibilityOf(onlinePayment.iframeConnect));
         driver.switchTo().frame(iFrame);
 
-// Проверить, что введённая сумма содержится в тексте вместе с валютой "BYN"
-        WebElement creditCardFormCost = wait.until(ExpectedConditions.visibilityOf(onlinePayment.creditCardFormCost));
+        WebElement creditCardFormCost = wait.until(ExpectedConditions.visibilityOf(onlinePayment.creditCardFormCost)); // Проверить, что введённая сумма содержится в тексте вместе с валютой "BYN"
         Assertions.assertEquals(sum + " BYN", creditCardFormCost.getText(), "Ожидаемая сумма и актуальна не совпадает.");
-
-//Проверка значение плейсхолдера на фрейме <Номер карты>
-        WebElement labelText = onlinePayment.labelText;
+        WebElement labelText = onlinePayment.labelText; //Проверка значение плейсхолдера на фрейме <Номер карты>
         Assertions.assertEquals("Номер карты", labelText.getText(), "Текст во фрейме не соответствует <Номер карты>");
-
-// Проверка значения номера телефона
-        WebElement numberPhoneText = onlinePayment.numberPhoneText;
+        WebElement numberPhoneText = onlinePayment.numberPhoneText; // Проверка значения номера телефона
         Assertions.assertEquals("Оплата: Услуги связи Номер:375297777777", numberPhoneText.getText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");
-
-//Проверка значения плейсхоледра <Срок действия>
-        WebElement timeInserted = onlinePayment.timeInserted;
+        WebElement timeInserted = onlinePayment.timeInserted; //Проверка значения плейсхоледра <Срок действия>
         Assertions.assertEquals("Срок действия", timeInserted.getText(), "Текст во фрейме не соответствует <Срок действия>");
-
-//Проверка надписи <CVC>
-        WebElement testCVC = onlinePayment.testCVC;
+        WebElement testCVC = onlinePayment.testCVC; //Проверка надписи <CVC>
         Assertions.assertEquals("CVC", testCVC.getText(), "Текст во фрейме не соответствует <CVC>");
-
-//Проверка надписи <Имя держателя (на карте)>
-        WebElement nameOuner = onlinePayment.nameOuner;
+        WebElement nameOuner = onlinePayment.nameOuner; //Проверка надписи <Имя держателя (на карте)>
         Assertions.assertEquals("Имя держателя (как на карте)", nameOuner.getText(), "Текст во фрейме не соответствует <Имя держателя (на карте)>");
-
-//Проверка надписи на кнопке
-        WebElement buttonLocatorSum = onlinePayment.buttonLocatorSum;
+        WebElement buttonLocatorSum = onlinePayment.buttonLocatorSum; //Проверка надписи на кнопке
         Assertions.assertEquals("Оплатить " + sum + " BYN", buttonLocatorSum.getText(), "Текст во фрейме не соответствует <Оплатить 10.55 BYN>");
     }
 }
