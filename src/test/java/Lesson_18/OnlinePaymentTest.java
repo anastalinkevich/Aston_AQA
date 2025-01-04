@@ -41,7 +41,6 @@ public class OnlinePaymentTest extends BaseTest{
         onlinePayment.clickLink();
         String expectedUrl = "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/";
         assertEquals(expectedUrl, driver.getCurrentUrl(), "Переход не произошёл по linkText 'Подробнее о сервисе'"); // Проверяем, что произошла навигация на нужную страницу
-        driver.navigate().back();// Возвращаемся на предыдущую страницу
     }
 
     @Flaky
@@ -103,9 +102,9 @@ public class OnlinePaymentTest extends BaseTest{
     @Test
     public void testFillFrame(){
         onlinePayment.setForm("297777777", "12.55");
-//        onli nePayment.switchToFrame();
+//        onlinePayment.switchToFrame();
 
-        onlinePayment.switchToFrame();
+        onlinePayment.formToBeClickable();
 
         assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
         assertEquals("Номер карты", onlinePayment.getCardNumber(), "Текст во фрейме не соответствует <Номер карты>");
