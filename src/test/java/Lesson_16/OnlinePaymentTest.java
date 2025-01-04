@@ -28,8 +28,9 @@ public class OnlinePaymentTest {
 // Перед каждым тестом
     @BeforeEach
     void setUp(){
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        onlinePayment = new OnlinePayment(driver); // Переместил сюда!
+        onlinePayment = new OnlinePayment(driver);
         driver.get("https://www.mts.by/?hash-offset=70&hash-dur=1300#pay-section");
         driver.manage().window().maximize();
         WebElement cookieLocator = driver.findElement(By.xpath("//*[@id='cookie-agree']"));
@@ -43,9 +44,9 @@ public class OnlinePaymentTest {
     @DisplayName("Проверка наличия текста 'Онлайн пополнение без комиссии'")
     @Test
     public void firstTest() {
-        OnlinePayment actualText = onlinePayment.findText();
-        String expectedText = "Онлайн пополнение\nбез комиссии";
-        //Assertions.assertEquals(expectedText, actualText, "Не удалось найти строку - Онлайн пополнение без комиссии");
+        String actualText = onlinePayment.findText();
+        String expectedText = "Онлайн пополнение без комиссии";
+        Assertions.assertEquals(expectedText, actualText, "Не удалось найти строку - Онлайн пополнение без комиссии");
     }
 
 // Второй тест Lesson_15
@@ -63,10 +64,7 @@ public class OnlinePaymentTest {
         wait.until(ExpectedConditions.elementToBeClickable(onlinePayment.linkText));
         onlinePayment.clickLink();
         String expectedUrl = "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/";
-    // Проверяем, что произошла навигация на нужную страницу
         Assertions.assertEquals(expectedUrl, driver.getCurrentUrl(), "Переход не произошёл по linkText 'Подробнее о сервисе'");
-    // Возвращаемся на предыдущую страницу
-        driver.navigate().back();
     }
 
 // Четвёртый тест Lesson_15
@@ -77,7 +75,7 @@ public class OnlinePaymentTest {
 
         onlinePayment.setSum(sum);
         onlinePayment.clickButton();
-    //Поверка и явное ожидание
+
         wait.until(ExpectedConditions.visibilityOf(onlinePayment.frameConnect));
         Assertions.assertTrue(onlinePayment.frameConnect.isDisplayed(), "Пополнение не произошло");
     }
@@ -111,7 +109,6 @@ public class OnlinePaymentTest {
         WebElement sumMenu = onlinePayment.homeInternet;
         sumMenu.click();
 
-    // Ожидание появления полей ввода
         WebElement inputInternetPhone = waitElement.until(ExpectedConditions.visibilityOfElementLocated(By.id("internet-phone")));
         WebElement inputInternetSum = waitElement.until(ExpectedConditions.visibilityOfElementLocated(By.id("internet-sum")));
     // Извлечение и проверка значений placeholder
@@ -175,18 +172,22 @@ public class OnlinePaymentTest {
 
         WebElement creditCardFormCost = wait.until(ExpectedConditions.visibilityOf(onlinePayment.creditCardFormCost)); // Проверить, что введённая сумма содержится в тексте вместе с валютой "BYN"
         Assertions.assertEquals(sum + " BYN", creditCardFormCost.getText(), "Ожидаемая сумма и актуальна не совпадает.");
-        WebElement labelText = onlinePayment.labelText; //Проверка значение плейсхолдера на фрейме <Номер карты>
+        WebElement labelText = onlinePayment.labelText;             //Проверка значение плейсхолдера на фрейме <Номер карты>
         Assertions.assertEquals("Номер карты", labelText.getText(), "Текст во фрейме не соответствует <Номер карты>");
         WebElement numberPhoneText = onlinePayment.numberPhoneText; // Проверка значения номера телефона
         Assertions.assertEquals("Оплата: Услуги связи Номер:375297777777", numberPhoneText.getText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");
-        WebElement timeInserted = onlinePayment.timeInserted; //Проверка значения плейсхоледра <Срок действия>
+        WebElement timeInserted = onlinePayment.timeInserted;       //Проверка значения плейсхоледра <Срок действия>
         Assertions.assertEquals("Срок действия", timeInserted.getText(), "Текст во фрейме не соответствует <Срок действия>");
-        WebElement testCVC = onlinePayment.testCVC; //Проверка надписи <CVC>
+        WebElement testCVC = onlinePayment.testCVC;                  //Проверка надписи <CVC>
         Assertions.assertEquals("CVC", testCVC.getText(), "Текст во фрейме не соответствует <CVC>");
-        WebElement nameOuner = onlinePayment.nameOuner; //Проверка надписи <Имя держателя (на карте)>
-        Assertions.assertEquals("Имя держателя (как на карте)", nameOuner.getText(), "Текст во фрейме не соответствует <Имя держателя (на карте)>");
+        WebElement nameOwner = onlinePayment.nameOwner;              //Проверка надписи <Имя держателя (на карте)>
+        Assertions.assertEquals("Имя держателя (как на карте)", nameOwner.getText(), "Текст во фрейме не соответствует <Имя держателя (на карте)>");
         WebElement buttonLocatorSum = onlinePayment.buttonLocatorSum; //Проверка надписи на кнопке
         Assertions.assertEquals("Оплатить " + sum + " BYN", buttonLocatorSum.getText(), "Текст во фрейме не соответствует <Оплатить 10.55 BYN>");
+    }
+    @AfterEach
+    public void tearDown(){
+        driver.quit();
     }
 }
 

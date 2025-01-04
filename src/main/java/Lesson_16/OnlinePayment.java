@@ -1,16 +1,17 @@
 package Lesson_16;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class OnlinePayment {
     public static WebDriver driver;
 
 // Локаторы класса OnlinePayment
-    @FindBy(xpath = "//div[@class = 'pay__wrapper']/h2")
-    WebElement textLocator;
+    By textLocator = By.xpath("//div[@class = 'pay__wrapper']/h2");
+//    @FindBy(xpath = "//div[@class = 'pay__wrapper']/h2")
+//    WebElement textLocator;
     @FindBy(className = "pay__partners")
         WebElement partnersLocator;
     @FindBy(linkText = "Подробнее о сервисе")
@@ -38,7 +39,7 @@ public class OnlinePayment {
     @FindBy(xpath = "//*[@class='ng-tns-c46-5 ng-star-inserted']")
         WebElement testCVC;
     @FindBy(xpath = "//*[@class='ng-tns-c46-3 ng-star-inserted']")
-        WebElement nameOuner;
+        WebElement nameOwner;
     @FindBy(xpath = "//*[@class='colored disabled']")
         WebElement buttonLocatorSum;
 
@@ -54,13 +55,11 @@ public class OnlinePayment {
 
 // Конструктор класса
     public OnlinePayment(WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        OnlinePayment.driver = driver;;
+        OnlinePayment.driver = driver;
     }
 // Метод первого теста. Нахождение заголовка
-    public OnlinePayment findText(){
-        textLocator.isDisplayed();
-        return this;
+    public String findText(){
+        return driver.findElement(textLocator).getText().replaceAll("\n", " ");
     }
 
 // Метод второго теста. Ищем лого партеров
