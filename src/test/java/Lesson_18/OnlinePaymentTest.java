@@ -35,7 +35,7 @@ public class OnlinePaymentTest extends BaseTest{
 
     @Severity(MINOR)
     @Tag("Задание по лекции 15")
-    @DisplayName("Проверка перехода по ссылке")
+    @DisplayName("Проверка перехода по ссылке «Подробнее о сервисе»")
     @Test
     public void testLink() {
         onlinePayment.clickLink();
@@ -104,7 +104,7 @@ public class OnlinePaymentTest extends BaseTest{
         onlinePayment.setForm("297777777", "12.55");
 //        onlinePayment.switchToFrame();
 
-        onlinePayment.formToBeClickable();
+        onlinePayment.switchToFrame();
 
         assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
         assertEquals("Номер карты", onlinePayment.getCardNumber(), "Текст во фрейме не соответствует <Номер карты>");

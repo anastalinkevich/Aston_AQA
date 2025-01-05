@@ -19,8 +19,15 @@ public class OnlinePayment {
     final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/"; // Переменная для проверки иконок на фрейме
 
 // Локатор согласия с сookie
-    @FindBy(xpath = "//*[@id='cookie-agree']")
-    WebElement cookieAgree;
+//    @FindBy(xpath = "//*[@id='cookie-agree']")
+//    WebElement cookieAgree;
+
+    By cookieAgree = By.xpath("//*[@id='cookie-agree']");
+
+    public void getCookieAgree() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(cookieAgree)).click();
+    }
 
 // Локаторы формы "Онлайн пополнение без комиссии"
     By textLocator = By.xpath("//div[@class='pay__wrapper']/h2");     // Локатор заголовка "Онлайн пополнение без комиссии"
@@ -53,7 +60,7 @@ public class OnlinePayment {
     By homeInternet = By.xpath("//p[@class='select__option' and text()='Домашний интернет']");     // Локатор перехода на субменю "Домашний интернет"
     By arrears = By.xpath("//p[@class='select__option' and text()='Задолженность']");     // Локатор перехода на субменю "Задолженность"
 
-// Локаторы субменю
+// Локаторы фрейма
     By internetPhone = By.id("internet-phone");     // Локатор поля "Номер абонента". Субменю "Домашний интернет"
     By internetSum = By.id("internet-sum");     // Локатор поля "Сумма". Субменю "Домашний интернет"
     By scoreInstalment = By.id("score-instalment"); // Локатор поля "Номер счета на 44". Субменю "Рассрочка"

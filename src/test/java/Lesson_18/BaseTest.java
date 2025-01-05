@@ -24,10 +24,11 @@ public abstract class BaseTest {
         driver.get(baseUrlOnlinePay);
         driver.manage().window().maximize();
 
-        WebElement cookieLocator = onlinePayment.cookieAgree;
-        if (cookieLocator.isDisplayed()) {
-            cookieLocator.click();
-        }
+        onlinePayment.getCookieAgree();
+//        WebElement cookieLocator = onlinePayment.cookieAgree;
+//        if (cookieLocator.isDisplayed()) {
+//            cookieLocator.click();
+//        }
     }
 
     @Step("Закрытие драйвера. Конец теста")
