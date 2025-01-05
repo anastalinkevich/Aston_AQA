@@ -4,11 +4,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,59 +15,52 @@ public class OnlinePayment {
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
     final String imgURL = "https://checkout.bepaid.by/widget_v2/assets/images/payment-icons/card-types/"; // Переменная для проверки иконок на фрейме
 
-// Локатор согласия с сookie
-//    @FindBy(xpath = "//*[@id='cookie-agree']")
-//    WebElement cookieAgree;
-
+// Локатор соглашения с cookie
     By cookieAgree = By.xpath("//*[@id='cookie-agree']");
 
-    public void getCookieAgree() {
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(cookieAgree)).click();
-    }
-
 // Локаторы формы "Онлайн пополнение без комиссии"
-    By textLocator = By.xpath("//div[@class='pay__wrapper']/h2");     // Локатор заголовка "Онлайн пополнение без комиссии"
-    By partnersLocator = By.className("pay__partners"); // Локатор лого партнеров
-    By linkText = By.linkText("Подробнее о сервисе");     // Локатор ссылки "Подробнее о сервисе"
-    By connectPhone = By.id("connection-phone");     // Локатор плейсхолдера поля "Номер телефона". Меню "Услуги связи"
-    By connectSum = By.id("connection-sum");     // Локатор плейсхолдера поля "Сумма". Меню "Услуги связи"
-    By submitButton = By.xpath("//*[@id='pay-connection']/button");     // Локатор кнопки "Продолжить"
+    By textLocator = By.xpath("//div[@class='pay__wrapper']/h2");      // Локатор заголовка "Онлайн пополнение без комиссии"
+    By partnersLocator = By.className("pay__partners");                             // Локатор лого партнеров
+    By linkText = By.linkText("Подробнее о сервисе");                               // Локатор ссылки "Подробнее о сервисе"
+    By connectPhone = By.id("connection-phone");                                    // Локатор плейсхолдера поля "Номер телефона". Меню "Услуги связи"
+    By connectSum = By.id("connection-sum");                                        // Локатор плейсхолдера поля "Сумма". Меню "Услуги связи"
+    By submitButton = By.xpath("//*[@id='pay-connection']/button");   // Локатор кнопки "Продолжить"
 
-//Локаторы фрейма продолжения оформления оплаты
-    @FindBy(xpath = "//iframe[@src='https://checkout.bepaid.by/widget_v2/index.html']")
-    WebElement iframeConnect;       // Локатор фрейма продолжения оформления оплаты
-//    @FindBy(xpath = "//div[@class='app-wrapper__content']")
-//    WebElement onlinePaymentForm;
-    @FindBy(xpath = "//*[@class='bepaid-iframe']")
-    WebElement newFrameConnect;
-
-    By sumFrame = By.xpath("//div[@class='pay-description__cost']/span[1]");    // Локатор плейсхолдера. Строка "12.55 BYN"
-    By numberCardFrame = By.xpath("//*[@class='ng-tns-c46-1 ng-star-inserted']"); // Локатор плейсхолдера. Поле "Номер карты"
+// Локаторы фрейма продолжения оформления оплаты
+    By frameConnect = By.xpath("//div[@class='pay__wrapper']/h2");                  // Локатор фрейма
+    By sumFrame = By.xpath("//div[@class='pay-description__cost']/span[1]");        // Локатор плейсхолдера. Строка "12.55 BYN"
+    By numberCardFrame = By.xpath("//*[@class='ng-tns-c46-1 ng-star-inserted']");   // Локатор плейсхолдера. Поле "Номер карты"
     By numberPhoneText = By.xpath("//div[@class='pay-description__text']/span[1]"); // Локатор плейсхолдера. Строка "Оплата: Услуги связи Номер:375297777777"
-    By timeInserted = By.xpath("//*[@class='ng-tns-c46-4 ng-star-inserted']");     // Локатор плейсхолдера. Поле "Срок действия"
-    By testCVC = By.xpath("//*[@class='ng-tns-c46-5 ng-star-inserted']");     // Локатор плейсхолдера поля "CVC"
-    By nameOwner = By.xpath("//*[@class='ng-tns-c46-3 ng-star-inserted']");     // Локатор плейсхолдера поля "Имя держателя (как на карте)"
-    By buttonLocatorSum = By.xpath("//*[@class='colored disabled']"); // Локатор текста кнопки "Оплатить 12.55 BYN"
-    By logoPartnersFrame = By.xpath("//div[@class='cards-brands ng-tns-c46-1']"); //Локатор лого партнеров на фрейме оплаты
+    By timeInserted = By.xpath("//*[@class='ng-tns-c46-4 ng-star-inserted']");      // Локатор плейсхолдера. Поле "Срок действия"
+    By testCVC = By.xpath("//*[@class='ng-tns-c46-5 ng-star-inserted']");           // Локатор плейсхолдера поля "CVC"
+    By nameOwner = By.xpath("//*[@class='ng-tns-c46-3 ng-star-inserted']");         // Локатор плейсхолдера поля "Имя держателя (как на карте)"
+    By buttonLocatorSum = By.xpath("//*[@class='colored disabled']");               // Локатор текста кнопки "Оплатить 12.55 BYN"
+    By logoPartnersFrame = By.xpath("//div[@class='cards-brands ng-tns-c46-1']");   //Локатор лого партнеров на фрейме оплаты
 
-//Локаторы полей в "Онлайн пополнение без комиссии"
+// Локаторы полей в "Онлайн пополнение без комиссии"
     By menuSelect = By.className("select__header");     // Локатор нажатия на меню для вызова субменю
-    By scoreMenu = By.xpath("//p[@class='select__option' and text()='Рассрочка']");     // Локатор перехода на субменю "Рассрочка"
+    By scoreMenu = By.xpath("//p[@class='select__option' and text()='Рассрочка']");                // Локатор перехода на субменю "Рассрочка"
     By homeInternet = By.xpath("//p[@class='select__option' and text()='Домашний интернет']");     // Локатор перехода на субменю "Домашний интернет"
-    By arrears = By.xpath("//p[@class='select__option' and text()='Задолженность']");     // Локатор перехода на субменю "Задолженность"
+    By arrears = By.xpath("//p[@class='select__option' and text()='Задолженность']");              // Локатор перехода на субменю "Задолженность"
 
-// Локаторы фрейма
-    By internetPhone = By.id("internet-phone");     // Локатор поля "Номер абонента". Субменю "Домашний интернет"
-    By internetSum = By.id("internet-sum");     // Локатор поля "Сумма". Субменю "Домашний интернет"
-    By scoreInstalment = By.id("score-instalment"); // Локатор поля "Номер счета на 44". Субменю "Рассрочка"
-    By instalmentSum = By.id("instalment-sum");     // Локатор поля "Сумма". Субменю "Рассрочка"
-    By scoreArrears = By.id("score-arrears");     // Локатор поля "Номер счета на 2073". Субменю "Задолженность"
-    By arrearsSum = By.id("arrears-sum");     // Локатор поля "Сумма". Субменю "Задолженность"
+// Локаторы субменю
+    By paymentIframe = By.className("bepaid-iframe");
+    By internetPhone = By.id("internet-phone");         // Локатор поля "Номер абонента". Субменю "Домашний интернет"
+    By internetSum = By.id("internet-sum");             // Локатор поля "Сумма". Субменю "Домашний интернет"
+    By scoreInstalment = By.id("score-instalment");     // Локатор поля "Номер счета на 44". Субменю "Рассрочка"
+    By instalmentSum = By.id("instalment-sum");         // Локатор поля "Сумма". Субменю "Рассрочка"
+    By scoreArrears = By.id("score-arrears");           // Локатор поля "Номер счета на 2073". Субменю "Задолженность"
+    By arrearsSum = By.id("arrears-sum");               // Локатор поля "Сумма". Субменю "Задолженность"
 
 // Конструктор класса OnlinePayment
     public OnlinePayment(WebDriver driver) {
         OnlinePayment.driver = driver;
+    }
+
+//Метод соглашения с cookie
+    public void getCookieAgree() {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(cookieAgree)).click();
     }
 
     @Step("Нахождение заголовка <Онлайн пополнение без комиссии>")
@@ -215,34 +205,15 @@ public class OnlinePayment {
 
     @Step("Ожидание фрейма для продолжения оформления оплаты и переход на него")
     public boolean getIframeConnect(){
-       // Явное ожидание фрейма и переход для дальнейшей оплаты
-        //wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameConnect));
-        //WebElement formElement = wait.until(ExpectedConditions.visibilityOf(frameConnect));
         return driver.findElement(frameConnect).isDisplayed();
     }
 
-    By frameConnect = By.xpath("//div[@class='pay__wrapper']/h2");
-
-    @Step("Отображение фрейма продолжения оформления оплаты после нажатия кнопки \"Продолжить\"")
+    @Step("Отображение фрейма продолжения оформления оплаты после нажатия кнопки <Продолжить>")
     public void switchToFrame(){
         // Инициализация WebElement с указанным локатором
-        WebElement frameElement = driver.findElement(paymentIframe);
-
-        // Ждем пока фрейм станет доступен и переключимся на него
+        WebElement frameElement = driver.findElement(paymentIframe);         // Ждем пока фрейм станет доступен и переключимся на него
         WebElement visibleFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOf(frameElement));
-
-        // Переключаем контекст на найденный фрейм
-        driver.switchTo().frame(visibleFrame);
-
-//        WebElement formElement = wait.until(ExpectedConditions.visibilityOf(frameConnect));
-//        driver.switchTo().frame(formElement);
+        driver.switchTo().frame(visibleFrame);                              // Переключаем контекст на найденный фрейм
     }
-
-    public void formToBeClickable(){
-        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameConnect));
-        wait.until(ExpectedConditions.elementToBeClickable(onlinePaymentForm));
-    }
-    private final By paymentIframe = By.className("bepaid-iframe");
-    private final By onlinePaymentForm = By.xpath("//div[@class='app-wrapper__content']");
 }

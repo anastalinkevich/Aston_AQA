@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OnlinePaymentTest extends BaseTest{
 
-
     @Owner("Linkevich Anastasiya")
     @Severity(MINOR)
     @Tag("Задание по лекции 15")
@@ -43,7 +42,6 @@ public class OnlinePaymentTest extends BaseTest{
         assertEquals(expectedUrl, driver.getCurrentUrl(), "Переход не произошёл по linkText 'Подробнее о сервисе'"); // Проверяем, что произошла навигация на нужную страницу
     }
 
-    @Flaky
     @Severity(MINOR)
     @Tag("Задание по лекции 15")
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
@@ -102,10 +100,7 @@ public class OnlinePaymentTest extends BaseTest{
     @Test
     public void testFillFrame(){
         onlinePayment.setForm("297777777", "12.55");
-//        onlinePayment.switchToFrame();
-
         onlinePayment.switchToFrame();
-
         assertEquals("12.55 BYN", onlinePayment.getSumFrame(), "Ожидаемая сумма и актуальная не совпадает.");
         assertEquals("Номер карты", onlinePayment.getCardNumber(), "Текст во фрейме не соответствует <Номер карты>");
         assertEquals("Оплата: Услуги связи Номер:375297777777", onlinePayment.getNumberPhoneText(), "Текст во фрейме не соответствует <Оплата: Услуги связи Номер:375297777777>");

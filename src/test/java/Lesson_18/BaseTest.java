@@ -5,7 +5,6 @@ import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
@@ -24,11 +23,7 @@ public abstract class BaseTest {
         driver.get(baseUrlOnlinePay);
         driver.manage().window().maximize();
 
-        onlinePayment.getCookieAgree();
-//        WebElement cookieLocator = onlinePayment.cookieAgree;
-//        if (cookieLocator.isDisplayed()) {
-//            cookieLocator.click();
-//        }
+        onlinePayment.getCookieAgree(); // Согласие с cookie
     }
 
     @Step("Закрытие драйвера. Конец теста")
