@@ -12,7 +12,6 @@ public class OnlinePaymentTest extends BaseTest{
 
     @Owner("Linkevich Anastasiya")
     @Severity(MINOR)
-    @Tag("Задание по лекции 15")
     @DisplayName("Проверка наличия текста <Онлайн пополнение без комиссии>")
     @Test
     public void testText() {
@@ -22,7 +21,6 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
-    @Tag("Задание по лекции 15")
     @DisplayName("Проверка лого Партнеров в 'Онлайн пополнение без комиссии'")
     @Test
     void logoPartners() {
@@ -43,7 +41,6 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
-    @Tag("Задание по лекции 15")
     @DisplayName("Проверка на заполнение полей и подтверждения пополнения счёта")
     @Test
     public void testButton() {
@@ -53,7 +50,6 @@ public class OnlinePaymentTest extends BaseTest{
 
 // Тесты по лекции 16 "Тестирование с помощью Selenium WebDriver часть 2"
     @Severity(MINOR)
-    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Услуги связи>")
     @Test
     void testPlaceholderServices() {
@@ -62,7 +58,6 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
-    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Домашний интернет>")
     @Test
     public void testPlaceholderInternet(){
@@ -72,7 +67,6 @@ public class OnlinePaymentTest extends BaseTest{
     }
 
     @Severity(MINOR)
-    @Tag("Задание по лекции 16")
     @DisplayName("Проверка плейсхолдеров <Рассрочка>")
     @Test
     public void testPlaceholderScore(){
@@ -80,8 +74,7 @@ public class OnlinePaymentTest extends BaseTest{
         assertEquals("Номер счета на 44", onlinePayment.getScoreInstalment(), "Название в плейсхолдере не совпадает с 'Номер счета на 44'");
         assertEquals("Сумма", onlinePayment.getInstalmentSum(), "Название в плейсхолдере не совпадает с 'Сумма'");
     }
-
-    @Tag("Задание по лекции 16")
+    @Severity(NORMAL)
     @DisplayName("Проверка плейсхолдеров <Задолженность>")
     @Test
     public void testPlaceholderArrears(){
@@ -94,7 +87,6 @@ public class OnlinePaymentTest extends BaseTest{
 //Тест начал падать после оптимизации, но при дебаге проходит
     @Flaky
     @Severity(NORMAL)
-    @Tag("Задание по лекции 16")
     @DisplayName("Проверка полей фрейма оплаты")
     @Description("Заполнение полей оплаты (номер телефона, сумма оплаты). Переход на фрейм дальнейшей оплаты. Проверка плейсхолдеров на фрейме, логотипы партеров.")
     @Test
